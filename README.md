@@ -11,7 +11,7 @@
 |------|--------| --------|
 | Renato Valle | [@renatolvalle](https://github.com/renatolvalle) | RM 572352
 | Renato Brevi | [@renascience](https://github.com/renascience) | RM 570266
-| Alex | [@QTAlox](https://github.com/QTAlox) | RM 570614
+| Alexandre Niewelt | [@QTAlox](https://github.com/QTAlox) | RM 570614
 | Danilo Fernandes | [@dandgsf](https://github.com/dandgsf) | RM 570057
 | Renan Otero | [@idrenanbr](https://github.com/idrenanbr) | RM 573615
 
