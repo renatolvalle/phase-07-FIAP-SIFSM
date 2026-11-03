@@ -13,7 +13,6 @@
 | Renato Brevi | [@renascience](https://github.com/renascience) | RM 570266
 | Alexandre Niewelt | [@QTAlox](https://github.com/QTAlox) | RM 570614
 | Danilo Fernandes | [@dandgsf](https://github.com/dandgsf) | RM 570057
-| Renan Otero | [@idrenanbr](https://github.com/idrenanbr) | RM 573615
 
 ## 🎥 Entrega
 
