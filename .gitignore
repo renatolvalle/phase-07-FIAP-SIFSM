@@ -218,3 +218,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Banco SQLite gerado automaticamente
+/aurora_siger.db
+/aurora_siger.db-journal
+/aurora_siger.db-wal
+/aurora_siger.db-shm
+
+# Arquivos temporários do macOS
+.DS_Store
+.AppleDouble
+.LSOverride
