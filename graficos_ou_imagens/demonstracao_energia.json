@@ -1,0 +1,1050 @@
+{
+  "origem": "Dados sintéticos didáticos; não são medições reais de Marte.",
+  "serie_base": [
+    {
+      "ciclo": 1,
+      "consumo_kw": 4.37,
+      "geracao_kw": 7.0
+    },
+    {
+      "ciclo": 2,
+      "consumo_kw": 4.84,
+      "geracao_kw": 7.2
+    },
+    {
+      "ciclo": 3,
+      "consumo_kw": 5.06,
+      "geracao_kw": 7.4
+    },
+    {
+      "ciclo": 4,
+      "consumo_kw": 4.88,
+      "geracao_kw": 7.6
+    },
+    {
+      "ciclo": 5,
+      "consumo_kw": 5.15,
+      "geracao_kw": 7.8
+    },
+    {
+      "ciclo": 6,
+      "consumo_kw": 5.07,
+      "geracao_kw": 8.0
+    },
+    {
+      "ciclo": 7,
+      "consumo_kw": 5.64,
+      "geracao_kw": 8.2
+    },
+    {
+      "ciclo": 8,
+      "consumo_kw": 5.41,
+      "geracao_kw": 7.8
+    },
+    {
+      "ciclo": 9,
+      "consumo_kw": 5.33,
+      "geracao_kw": 6.8
+    },
+    {
+      "ciclo": 10,
+      "consumo_kw": 5.8,
+      "geracao_kw": 5.5
+    },
+    {
+      "ciclo": 11,
+      "consumo_kw": 6.02,
+      "geracao_kw": 4.0
+    },
+    {
+      "ciclo": 12,
+      "consumo_kw": 5.84,
+      "geracao_kw": 3.5
+    },
+    {
+      "ciclo": 13,
+      "consumo_kw": 6.11,
+      "geracao_kw": 3.0
+    },
+    {
+      "ciclo": 14,
+      "consumo_kw": 6.03,
+      "geracao_kw": 2.8
+    },
+    {
+      "ciclo": 15,
+      "consumo_kw": 6.6,
+      "geracao_kw": 2.5
+    },
+    {
+      "ciclo": 16,
+      "consumo_kw": 6.37,
+      "geracao_kw": 2.8
+    },
+    {
+      "ciclo": 17,
+      "consumo_kw": 6.29,
+      "geracao_kw": 3.5
+    },
+    {
+      "ciclo": 18,
+      "consumo_kw": 6.76,
+      "geracao_kw": 4.5
+    },
+    {
+      "ciclo": 19,
+      "consumo_kw": 6.98,
+      "geracao_kw": 5.5
+    },
+    {
+      "ciclo": 20,
+      "consumo_kw": 6.8,
+      "geracao_kw": 6.5
+    },
+    {
+      "ciclo": 21,
+      "consumo_kw": 7.07,
+      "geracao_kw": 7.5
+    },
+    {
+      "ciclo": 22,
+      "consumo_kw": 6.99,
+      "geracao_kw": 8.0
+    },
+    {
+      "ciclo": 23,
+      "consumo_kw": 7.56,
+      "geracao_kw": 8.2
+    },
+    {
+      "ciclo": 24,
+      "consumo_kw": 7.33,
+      "geracao_kw": 7.8
+    }
+  ],
+  "serie_estresse": [
+    {
+      "ciclo": 1,
+      "consumo_kw": 4.37,
+      "geracao_kw": 4.9
+    },
+    {
+      "ciclo": 2,
+      "consumo_kw": 4.84,
+      "geracao_kw": 5.04
+    },
+    {
+      "ciclo": 3,
+      "consumo_kw": 5.06,
+      "geracao_kw": 5.18
+    },
+    {
+      "ciclo": 4,
+      "consumo_kw": 4.88,
+      "geracao_kw": 5.32
+    },
+    {
+      "ciclo": 5,
+      "consumo_kw": 5.15,
+      "geracao_kw": 5.46
+    },
+    {
+      "ciclo": 6,
+      "consumo_kw": 5.07,
+      "geracao_kw": 5.6
+    },
+    {
+      "ciclo": 7,
+      "consumo_kw": 5.64,
+      "geracao_kw": 5.74
+    },
+    {
+      "ciclo": 8,
+      "consumo_kw": 5.41,
+      "geracao_kw": 5.46
+    },
+    {
+      "ciclo": 9,
+      "consumo_kw": 5.33,
+      "geracao_kw": 4.76
+    },
+    {
+      "ciclo": 10,
+      "consumo_kw": 5.8,
+      "geracao_kw": 3.85
+    },
+    {
+      "ciclo": 11,
+      "consumo_kw": 6.02,
+      "geracao_kw": 2.8
+    },
+    {
+      "ciclo": 12,
+      "consumo_kw": 5.84,
+      "geracao_kw": 2.45
+    },
+    {
+      "ciclo": 13,
+      "consumo_kw": 6.11,
+      "geracao_kw": 2.1
+    },
+    {
+      "ciclo": 14,
+      "consumo_kw": 6.03,
+      "geracao_kw": 1.96
+    },
+    {
+      "ciclo": 15,
+      "consumo_kw": 6.6,
+      "geracao_kw": 1.75
+    },
+    {
+      "ciclo": 16,
+      "consumo_kw": 6.37,
+      "geracao_kw": 1.96
+    },
+    {
+      "ciclo": 17,
+      "consumo_kw": 6.29,
+      "geracao_kw": 2.45
+    },
+    {
+      "ciclo": 18,
+      "consumo_kw": 6.76,
+      "geracao_kw": 3.15
+    },
+    {
+      "ciclo": 19,
+      "consumo_kw": 6.98,
+      "geracao_kw": 3.85
+    },
+    {
+      "ciclo": 20,
+      "consumo_kw": 6.8,
+      "geracao_kw": 4.55
+    },
+    {
+      "ciclo": 21,
+      "consumo_kw": 7.07,
+      "geracao_kw": 5.25
+    },
+    {
+      "ciclo": 22,
+      "consumo_kw": 6.99,
+      "geracao_kw": 5.6
+    },
+    {
+      "ciclo": 23,
+      "consumo_kw": 7.56,
+      "geracao_kw": 5.74
+    },
+    {
+      "ciclo": 24,
+      "consumo_kw": 7.33,
+      "geracao_kw": 5.46
+    }
+  ],
+  "simulacao_base": {
+    "historico": [
+      {
+        "ciclo": 1,
+        "consumo_kw": 4.37,
+        "geracao_kw": 7.0,
+        "consumo_kwh": 4.37,
+        "geracao_kwh": 7.0,
+        "energia_inicial_kwh": 12.0,
+        "energia_final_kwh": 14.629999999999999,
+        "soc_inicial_pct": 60.0,
+        "soc_final_pct": 73.14999999999999,
+        "carga_recebida_kwh": 2.63,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 2,
+        "consumo_kw": 4.84,
+        "geracao_kw": 7.2,
+        "consumo_kwh": 4.84,
+        "geracao_kwh": 7.2,
+        "energia_inicial_kwh": 14.629999999999999,
+        "energia_final_kwh": 16.99,
+        "soc_inicial_pct": 73.14999999999999,
+        "soc_final_pct": 84.94999999999999,
+        "carga_recebida_kwh": 2.3600000000000003,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 3,
+        "consumo_kw": 5.06,
+        "geracao_kw": 7.4,
+        "consumo_kwh": 5.06,
+        "geracao_kwh": 7.4,
+        "energia_inicial_kwh": 16.99,
+        "energia_final_kwh": 19.33,
+        "soc_inicial_pct": 84.94999999999999,
+        "soc_final_pct": 96.64999999999999,
+        "carga_recebida_kwh": 2.3400000000000007,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 4,
+        "consumo_kw": 4.88,
+        "geracao_kw": 7.6,
+        "consumo_kwh": 4.88,
+        "geracao_kwh": 7.6,
+        "energia_inicial_kwh": 19.33,
+        "energia_final_kwh": 20.0,
+        "soc_inicial_pct": 96.64999999999999,
+        "soc_final_pct": 100.0,
+        "carga_recebida_kwh": 0.6700000000000017,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 2.049999999999998
+      },
+      {
+        "ciclo": 5,
+        "consumo_kw": 5.15,
+        "geracao_kw": 7.8,
+        "consumo_kwh": 5.15,
+        "geracao_kwh": 7.8,
+        "energia_inicial_kwh": 20.0,
+        "energia_final_kwh": 20.0,
+        "soc_inicial_pct": 100.0,
+        "soc_final_pct": 100.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 2.6499999999999995
+      },
+      {
+        "ciclo": 6,
+        "consumo_kw": 5.07,
+        "geracao_kw": 8.0,
+        "consumo_kwh": 5.07,
+        "geracao_kwh": 8.0,
+        "energia_inicial_kwh": 20.0,
+        "energia_final_kwh": 20.0,
+        "soc_inicial_pct": 100.0,
+        "soc_final_pct": 100.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 2.9299999999999997
+      },
+      {
+        "ciclo": 7,
+        "consumo_kw": 5.64,
+        "geracao_kw": 8.2,
+        "consumo_kwh": 5.64,
+        "geracao_kwh": 8.2,
+        "energia_inicial_kwh": 20.0,
+        "energia_final_kwh": 20.0,
+        "soc_inicial_pct": 100.0,
+        "soc_final_pct": 100.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 2.5599999999999996
+      },
+      {
+        "ciclo": 8,
+        "consumo_kw": 5.41,
+        "geracao_kw": 7.8,
+        "consumo_kwh": 5.41,
+        "geracao_kwh": 7.8,
+        "energia_inicial_kwh": 20.0,
+        "energia_final_kwh": 20.0,
+        "soc_inicial_pct": 100.0,
+        "soc_final_pct": 100.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 2.3899999999999997
+      },
+      {
+        "ciclo": 9,
+        "consumo_kw": 5.33,
+        "geracao_kw": 6.8,
+        "consumo_kwh": 5.33,
+        "geracao_kwh": 6.8,
+        "energia_inicial_kwh": 20.0,
+        "energia_final_kwh": 20.0,
+        "soc_inicial_pct": 100.0,
+        "soc_final_pct": 100.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 1.4699999999999998
+      },
+      {
+        "ciclo": 10,
+        "consumo_kw": 5.8,
+        "geracao_kw": 5.5,
+        "consumo_kwh": 5.8,
+        "geracao_kwh": 5.5,
+        "energia_inicial_kwh": 20.0,
+        "energia_final_kwh": 19.7,
+        "soc_inicial_pct": 100.0,
+        "soc_final_pct": 98.5,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.2999999999999998,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 11,
+        "consumo_kw": 6.02,
+        "geracao_kw": 4.0,
+        "consumo_kwh": 6.02,
+        "geracao_kwh": 4.0,
+        "energia_inicial_kwh": 19.7,
+        "energia_final_kwh": 17.68,
+        "soc_inicial_pct": 98.5,
+        "soc_final_pct": 88.4,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 2.0199999999999996,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 12,
+        "consumo_kw": 5.84,
+        "geracao_kw": 3.5,
+        "consumo_kwh": 5.84,
+        "geracao_kwh": 3.5,
+        "energia_inicial_kwh": 17.68,
+        "energia_final_kwh": 15.34,
+        "soc_inicial_pct": 88.4,
+        "soc_final_pct": 76.7,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 2.34,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 13,
+        "consumo_kw": 6.11,
+        "geracao_kw": 3.0,
+        "consumo_kwh": 6.11,
+        "geracao_kwh": 3.0,
+        "energia_inicial_kwh": 15.34,
+        "energia_final_kwh": 12.23,
+        "soc_inicial_pct": 76.7,
+        "soc_final_pct": 61.150000000000006,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 3.1100000000000003,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 14,
+        "consumo_kw": 6.03,
+        "geracao_kw": 2.8,
+        "consumo_kwh": 6.03,
+        "geracao_kwh": 2.8,
+        "energia_inicial_kwh": 12.23,
+        "energia_final_kwh": 9.0,
+        "soc_inicial_pct": 61.150000000000006,
+        "soc_final_pct": 45.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 3.2300000000000004,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 15,
+        "consumo_kw": 6.6,
+        "geracao_kw": 2.5,
+        "consumo_kwh": 6.6,
+        "geracao_kwh": 2.5,
+        "energia_inicial_kwh": 9.0,
+        "energia_final_kwh": 4.9,
+        "soc_inicial_pct": 45.0,
+        "soc_final_pct": 24.500000000000004,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 4.1,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 16,
+        "consumo_kw": 6.37,
+        "geracao_kw": 2.8,
+        "consumo_kwh": 6.37,
+        "geracao_kwh": 2.8,
+        "energia_inicial_kwh": 4.9,
+        "energia_final_kwh": 1.33,
+        "soc_inicial_pct": 24.500000000000004,
+        "soc_final_pct": 6.65,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 3.5700000000000003,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 17,
+        "consumo_kw": 6.29,
+        "geracao_kw": 3.5,
+        "consumo_kwh": 6.29,
+        "geracao_kwh": 3.5,
+        "energia_inicial_kwh": 1.33,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 6.65,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 1.33,
+        "deficit_nao_atendido_kwh": 1.46,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 18,
+        "consumo_kw": 6.76,
+        "geracao_kw": 4.5,
+        "consumo_kwh": 6.76,
+        "geracao_kwh": 4.5,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 2.26,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 19,
+        "consumo_kw": 6.98,
+        "geracao_kw": 5.5,
+        "consumo_kwh": 6.98,
+        "geracao_kwh": 5.5,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 1.4800000000000004,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 20,
+        "consumo_kw": 6.8,
+        "geracao_kw": 6.5,
+        "consumo_kwh": 6.8,
+        "geracao_kwh": 6.5,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.2999999999999998,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 21,
+        "consumo_kw": 7.07,
+        "geracao_kw": 7.5,
+        "consumo_kwh": 7.07,
+        "geracao_kwh": 7.5,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.4299999999999997,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 2.1499999999999986,
+        "carga_recebida_kwh": 0.4299999999999997,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 22,
+        "consumo_kw": 6.99,
+        "geracao_kw": 8.0,
+        "consumo_kwh": 6.99,
+        "geracao_kwh": 8.0,
+        "energia_inicial_kwh": 0.4299999999999997,
+        "energia_final_kwh": 1.4399999999999995,
+        "soc_inicial_pct": 2.1499999999999986,
+        "soc_final_pct": 7.199999999999998,
+        "carga_recebida_kwh": 1.0099999999999998,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 23,
+        "consumo_kw": 7.56,
+        "geracao_kw": 8.2,
+        "consumo_kwh": 7.56,
+        "geracao_kwh": 8.2,
+        "energia_inicial_kwh": 1.4399999999999995,
+        "energia_final_kwh": 2.079999999999999,
+        "soc_inicial_pct": 7.199999999999998,
+        "soc_final_pct": 10.399999999999995,
+        "carga_recebida_kwh": 0.6399999999999997,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 24,
+        "consumo_kw": 7.33,
+        "geracao_kw": 7.8,
+        "consumo_kwh": 7.33,
+        "geracao_kwh": 7.8,
+        "energia_inicial_kwh": 2.079999999999999,
+        "energia_final_kwh": 2.549999999999999,
+        "soc_inicial_pct": 10.399999999999995,
+        "soc_final_pct": 12.749999999999995,
+        "carga_recebida_kwh": 0.46999999999999975,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      }
+    ],
+    "resumo": {
+      "quantidade_ciclos": 24,
+      "pico_consumo_kw": 7.56,
+      "pico_geracao_kw": 8.2,
+      "energia_inicial_kwh": 12.0,
+      "energia_final_kwh": 2.549999999999999,
+      "soc_minimo_pct": 0.0,
+      "soc_final_pct": 12.749999999999995,
+      "consumo_total_kwh": 144.3,
+      "geracao_total_kwh": 143.4,
+      "carga_recebida_total_kwh": 10.55,
+      "descarga_fornecida_total_kwh": 20.0,
+      "deficit_total_kwh": 5.5,
+      "excedente_total_kwh": 14.049999999999997,
+      "atendimento_percentual": 96.18849618849619
+    }
+  },
+  "simulacao_estresse": {
+    "historico": [
+      {
+        "ciclo": 1,
+        "consumo_kw": 4.37,
+        "geracao_kw": 4.9,
+        "consumo_kwh": 4.37,
+        "geracao_kwh": 4.9,
+        "energia_inicial_kwh": 12.0,
+        "energia_final_kwh": 12.530000000000001,
+        "soc_inicial_pct": 60.0,
+        "soc_final_pct": 62.650000000000006,
+        "carga_recebida_kwh": 0.5300000000000002,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 2,
+        "consumo_kw": 4.84,
+        "geracao_kw": 5.04,
+        "consumo_kwh": 4.84,
+        "geracao_kwh": 5.04,
+        "energia_inicial_kwh": 12.530000000000001,
+        "energia_final_kwh": 12.73,
+        "soc_inicial_pct": 62.650000000000006,
+        "soc_final_pct": 63.650000000000006,
+        "carga_recebida_kwh": 0.20000000000000018,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 3,
+        "consumo_kw": 5.06,
+        "geracao_kw": 5.18,
+        "consumo_kwh": 5.06,
+        "geracao_kwh": 5.18,
+        "energia_inicial_kwh": 12.73,
+        "energia_final_kwh": 12.850000000000001,
+        "soc_inicial_pct": 63.650000000000006,
+        "soc_final_pct": 64.25,
+        "carga_recebida_kwh": 0.1200000000000001,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 4,
+        "consumo_kw": 4.88,
+        "geracao_kw": 5.32,
+        "consumo_kwh": 4.88,
+        "geracao_kwh": 5.32,
+        "energia_inicial_kwh": 12.850000000000001,
+        "energia_final_kwh": 13.290000000000003,
+        "soc_inicial_pct": 64.25,
+        "soc_final_pct": 66.45,
+        "carga_recebida_kwh": 0.4400000000000004,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 5,
+        "consumo_kw": 5.15,
+        "geracao_kw": 5.46,
+        "consumo_kwh": 5.15,
+        "geracao_kwh": 5.46,
+        "energia_inicial_kwh": 13.290000000000003,
+        "energia_final_kwh": 13.600000000000001,
+        "soc_inicial_pct": 66.45,
+        "soc_final_pct": 68.0,
+        "carga_recebida_kwh": 0.3099999999999996,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 6,
+        "consumo_kw": 5.07,
+        "geracao_kw": 5.6,
+        "consumo_kwh": 5.07,
+        "geracao_kwh": 5.6,
+        "energia_inicial_kwh": 13.600000000000001,
+        "energia_final_kwh": 14.13,
+        "soc_inicial_pct": 68.0,
+        "soc_final_pct": 70.65,
+        "carga_recebida_kwh": 0.5299999999999994,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 7,
+        "consumo_kw": 5.64,
+        "geracao_kw": 5.74,
+        "consumo_kwh": 5.64,
+        "geracao_kwh": 5.74,
+        "energia_inicial_kwh": 14.13,
+        "energia_final_kwh": 14.23,
+        "soc_inicial_pct": 70.65,
+        "soc_final_pct": 71.15,
+        "carga_recebida_kwh": 0.10000000000000053,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 8,
+        "consumo_kw": 5.41,
+        "geracao_kw": 5.46,
+        "consumo_kwh": 5.41,
+        "geracao_kwh": 5.46,
+        "energia_inicial_kwh": 14.23,
+        "energia_final_kwh": 14.280000000000001,
+        "soc_inicial_pct": 71.15,
+        "soc_final_pct": 71.4,
+        "carga_recebida_kwh": 0.04999999999999982,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 9,
+        "consumo_kw": 5.33,
+        "geracao_kw": 4.76,
+        "consumo_kwh": 5.33,
+        "geracao_kwh": 4.76,
+        "energia_inicial_kwh": 14.280000000000001,
+        "energia_final_kwh": 13.71,
+        "soc_inicial_pct": 71.4,
+        "soc_final_pct": 68.55,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.5700000000000003,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 10,
+        "consumo_kw": 5.8,
+        "geracao_kw": 3.85,
+        "consumo_kwh": 5.8,
+        "geracao_kwh": 3.85,
+        "energia_inicial_kwh": 13.71,
+        "energia_final_kwh": 11.760000000000002,
+        "soc_inicial_pct": 68.55,
+        "soc_final_pct": 58.80000000000001,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 1.9499999999999997,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 11,
+        "consumo_kw": 6.02,
+        "geracao_kw": 2.8,
+        "consumo_kwh": 6.02,
+        "geracao_kwh": 2.8,
+        "energia_inicial_kwh": 11.760000000000002,
+        "energia_final_kwh": 8.540000000000003,
+        "soc_inicial_pct": 58.80000000000001,
+        "soc_final_pct": 42.70000000000002,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 3.2199999999999998,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 12,
+        "consumo_kw": 5.84,
+        "geracao_kw": 2.45,
+        "consumo_kwh": 5.84,
+        "geracao_kwh": 2.45,
+        "energia_inicial_kwh": 8.540000000000003,
+        "energia_final_kwh": 5.150000000000003,
+        "soc_inicial_pct": 42.70000000000002,
+        "soc_final_pct": 25.750000000000018,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 3.3899999999999997,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 13,
+        "consumo_kw": 6.11,
+        "geracao_kw": 2.1,
+        "consumo_kwh": 6.11,
+        "geracao_kwh": 2.1,
+        "energia_inicial_kwh": 5.150000000000003,
+        "energia_final_kwh": 1.1400000000000032,
+        "soc_inicial_pct": 25.750000000000018,
+        "soc_final_pct": 5.700000000000016,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 4.01,
+        "deficit_nao_atendido_kwh": 0.0,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 14,
+        "consumo_kw": 6.03,
+        "geracao_kw": 1.96,
+        "consumo_kwh": 6.03,
+        "geracao_kwh": 1.96,
+        "energia_inicial_kwh": 1.1400000000000032,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 5.700000000000016,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 1.1400000000000032,
+        "deficit_nao_atendido_kwh": 2.929999999999997,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 15,
+        "consumo_kw": 6.6,
+        "geracao_kw": 1.75,
+        "consumo_kwh": 6.6,
+        "geracao_kwh": 1.75,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 4.85,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 16,
+        "consumo_kw": 6.37,
+        "geracao_kw": 1.96,
+        "consumo_kwh": 6.37,
+        "geracao_kwh": 1.96,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 4.41,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 17,
+        "consumo_kw": 6.29,
+        "geracao_kw": 2.45,
+        "consumo_kwh": 6.29,
+        "geracao_kwh": 2.45,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 3.84,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 18,
+        "consumo_kw": 6.76,
+        "geracao_kw": 3.15,
+        "consumo_kwh": 6.76,
+        "geracao_kwh": 3.15,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 3.61,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 19,
+        "consumo_kw": 6.98,
+        "geracao_kw": 3.85,
+        "consumo_kwh": 6.98,
+        "geracao_kwh": 3.85,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 3.1300000000000003,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 20,
+        "consumo_kw": 6.8,
+        "geracao_kw": 4.55,
+        "consumo_kwh": 6.8,
+        "geracao_kwh": 4.55,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 2.25,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 21,
+        "consumo_kw": 7.07,
+        "geracao_kw": 5.25,
+        "consumo_kwh": 7.07,
+        "geracao_kwh": 5.25,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 1.8200000000000003,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 22,
+        "consumo_kw": 6.99,
+        "geracao_kw": 5.6,
+        "consumo_kwh": 6.99,
+        "geracao_kwh": 5.6,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 1.3900000000000006,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 23,
+        "consumo_kw": 7.56,
+        "geracao_kw": 5.74,
+        "consumo_kwh": 7.56,
+        "geracao_kwh": 5.74,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 1.8199999999999994,
+        "excedente_nao_armazenado_kwh": 0.0
+      },
+      {
+        "ciclo": 24,
+        "consumo_kw": 7.33,
+        "geracao_kw": 5.46,
+        "consumo_kwh": 7.33,
+        "geracao_kwh": 5.46,
+        "energia_inicial_kwh": 0.0,
+        "energia_final_kwh": 0.0,
+        "soc_inicial_pct": 0.0,
+        "soc_final_pct": 0.0,
+        "carga_recebida_kwh": 0.0,
+        "descarga_fornecida_kwh": 0.0,
+        "deficit_nao_atendido_kwh": 1.87,
+        "excedente_nao_armazenado_kwh": 0.0
+      }
+    ],
+    "resumo": {
+      "quantidade_ciclos": 24,
+      "pico_consumo_kw": 7.56,
+      "pico_geracao_kw": 5.74,
+      "energia_inicial_kwh": 12.0,
+      "energia_final_kwh": 0.0,
+      "soc_minimo_pct": 0.0,
+      "soc_final_pct": 0.0,
+      "consumo_total_kwh": 144.3,
+      "geracao_total_kwh": 100.38,
+      "carga_recebida_total_kwh": 2.2800000000000002,
+      "descarga_fornecida_total_kwh": 14.280000000000003,
+      "deficit_total_kwh": 31.919999999999998,
+      "excedente_total_kwh": 0.0,
+      "atendimento_percentual": 77.87941787941787
+    }
+  },
+  "regressao": {
+    "coeficientes": {
+      "intercepto_kw": 4.47719298245614,
+      "inclinacao_kw_por_ciclo": 0.12359649122807018
+    },
+    "metricas": {
+      "quantidade_total": 24,
+      "quantidade_treino": 19,
+      "quantidade_teste": 5,
+      "consumo_minimo_kw": 4.37,
+      "consumo_maximo_kw": 7.56,
+      "consumo_medio_kw": 6.0125,
+      "mae_kw": 0.1423508771929823,
+      "rmse_kw": 0.1645220747527454,
+      "r2": 0.6187674213950991,
+      "mae_referencia_kw": 1.4368421052631581
+    },
+    "previsoes": [
+      {
+        "ciclo": 25,
+        "consumo_previsto_kw": 7.567105263157894,
+        "extrapolacao": true
+      },
+      {
+        "ciclo": 26,
+        "consumo_previsto_kw": 7.690701754385964,
+        "extrapolacao": true
+      },
+      {
+        "ciclo": 27,
+        "consumo_previsto_kw": 7.814298245614035,
+        "extrapolacao": true
+      }
+    ],
+    "limitacoes": [
+      "Dados simulados, quando utilizados, não representam medições reais de Marte; a origem dos dados não é identificada automaticamente pela função.",
+      "Uma única separação temporal 80/20 não demonstra estabilidade em outros períodos; o ajuste do treino é mantido nas previsões futuras.",
+      "As previsões futuras são extrapolação temporal e não garantem que a tendência continue.",
+      "O intercepto estima o consumo no ciclo zero, sem interpretação física garantida.",
+      "Associação entre ciclo e consumo não implica causalidade; ocupação, clima e manutenção não são variáveis do modelo.",
+      "Poucas observações (menos de 30): a avaliação é exploratória."
+    ]
+  }
+}
