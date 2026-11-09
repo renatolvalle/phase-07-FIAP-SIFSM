@@ -29,6 +29,30 @@
 - Validar entradas e tratar erros.
 - Desenvolver testes das operações de presistência.
 
+**Estado da implementação — concluída na branch `dev-renaton`.**
+
+Entregas realizadas:
+
+- Estrutura inicial do projeto.
+- Menu Principal e submenu de gerenciamento.
+- Conexão e inicialização SQLite.
+- CRUD completo de módulos.
+- Cadastro e consulta de sensores.
+- Registro e consulta de leituras.
+- Agregação de dados energéticos.
+- Registro e consulta de solicitações.
+- Persistência de alertas.
+- Gerador de dados simulados em CSV.
+- Importação com deduplicação e rollback.
+- Testes automatizados de banco, dados e interface.
+- Auditoria técnica da implementação.
+
+A suíte possui 100 testes automatizados previstos após a
+conclusão da integração da interface feita por Renato Nascimento.
+
+**Próxima atividade:** revisão da documentação, commit e
+Pull Request para integração com a equipe.
+
 ### **Renato Valle** - Monitramento e Estruturas
 
 **Arquivos principais:**
