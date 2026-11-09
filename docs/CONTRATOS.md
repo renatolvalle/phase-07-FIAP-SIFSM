@@ -143,6 +143,74 @@ Cada ciclo simulado terá duração padrão de uma hora.
 - **Violação de integridade:** preservar o erro ou convertê-lo em exceção documentada.
 - **Função não implementada:** utilizar `NotImplementedError`.
 
+
+## **Observações da Implementação por Renato Nascimento**
+
+A camada de persistência foi implementada na branch `dev-renaton`,
+mantendo os contratos compartilhados da versão 1.0.
+
+### **Importação do CSV**
+
+`carregar_csv_inicial(conexao, caminho_csv)` retorna a quantidade
+de novas leituras inseridas.
+
+Uma segunda importação do mesmo arquivo retorna zero quando
+todas as leituras já estão armazenadas.
+
+A importação utiliza validação e controle transacional.
+Registros inválidos ou conflitantes provocam a reversão
+das alterações realizadas pela tentativa de importação.
+
+### **Solicitações**
+
+`listar_solicitacoes(conexao)` retorna as solicitações pendentes.
+
+`listar_solicitacoes(conexao, status=None)` retorna todas
+as solicitações, ordenadas por ID crescente.
+
+A ordenação por ID permite utilizar a lista como entrada
+para a fila FIFO de solicitações.
+
+### **Alertas**
+
+`registrar_alertas(conexao, alertas)` recebe uma lista de
+dicionários contendo:
+
+- `sensor_id`
+- `ciclo`
+- `regra_codigo`
+- `nivel`
+- `mensagem`
+
+A função retorna a quantidade de novos alertas inseridos.
+
+A combinação `sensor_id`, `ciclo` e `regra_codigo` é única.
+
+Alertas idênticos não são duplicados. Alertas conflitantes
+produzem erro.
+
+### **Séries Energéticas**
+
+`obter_serie_energia(conexao)` retorna uma lista de dicionários
+contendo:
+
+- `ciclo`
+- `consumo_kw`
+- `geracao_kw`
+
+Os valores são agregados por ciclo e representam potência em kW.
+
+A conversão para energia em kWh pertence à simulação computacional.
+
+### **Responsabilidades**
+
+A camada de banco de dados não executa monitoramento, regressão,
+simulação energética ou decisões dos agentes.
+
+Os módulos especializados recebem os dados por meio dos contratos
+compartilhados e devem validar suas próprias regras de negócio.
+
+
 ## **Regras de Integração**
 
 1. Não modificar assinaturas compartilhadas sem aprovação.
@@ -152,4 +220,4 @@ Cada ciclo simulado terá duração padrão de uma hora.
 5. Manter os formatos de retorno acordados.
 6. Adicionar testes às funcionalidades implementadas.
 
-**Versão dos Contratos: 1.0**
+**Versão dos Contratos: 1.1**
