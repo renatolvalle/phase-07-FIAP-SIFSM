@@ -38,9 +38,9 @@ def main():
         elif opcao == '3':
             print("\n[Executando] Iniciando simulação de Sistemas Multiagentes e IA...")
             try:
-                import agentes_ia_simulacao
+                import agents
             except ImportError:
-                print("Erro: O arquivo 'agentes_ia_simulacao.py' não foi encontrado.")
+                print("Erro: O arquivo 'agents.py' não foi encontrado.")
             input("\nPressione Enter para voltar ao menu...")
             
         elif opcao == '4':
