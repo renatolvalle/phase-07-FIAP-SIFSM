@@ -1,0 +1,4 @@
+# Artefatos binários não podem sofrer conversão LF/CRLF no checkout.
+*.pdf binary
+*.png binary
+*.zip binary

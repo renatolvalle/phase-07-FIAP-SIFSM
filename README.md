@@ -3,7 +3,7 @@
 ## **FIAP - Ciência da Computação | Fase 07**
 
 - **Colônia:** Aurora Siger
-- **Estado:** Protótipo integrado pelo terminal; documentação final e pacote de entrega pendentes
+- **Estado:** Protótipo, relatório, circuito e ZIP técnico preparados; pendentes somente gravação e publicação/link do vídeo
 - **Versão-alvo:** v0.2.0, após revisão e integração na `main`
 - **Linguagem:** Python
 - **Banco de Dados:** SQLite
@@ -80,6 +80,9 @@ A suíte automatizada usa `unittest`; veja [Como Executar os Testes](#como-execu
   A análise integrada e os modelos numéricos usam a biblioteca padrão; Matplotlib
   é carregado apenas na demonstração gráfica. A antiga análise paralela com
   NumPy/Pandas foi substituída pelos modelos compartilhados.
+- ReportLab e pypdf estão em `requirements-docs.txt`, separados do runtime:
+  reconstrução editorial dos PDFs e verificação documental. Não são necessários
+  para executar menus ou cálculos. Instale-os para rodar a suíte completa sem skips.
 
 ### **Instalação em ambiente virtual**
 
@@ -90,6 +93,7 @@ Execute os comandos na raiz `phase-07-FIAP-SIFSM/`.
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements-docs.txt
 .\.venv\Scripts\python.exe -m pip check
 ```
 
@@ -98,6 +102,7 @@ python -m venv .venv
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m pip install -r requirements-docs.txt
 .venv/bin/python -m pip check
 ```
 
@@ -314,7 +319,9 @@ arquivos usam diretórios temporários. Os testes da demonstração gráfica
 precisam das dependências instaladas por `requirements.txt`.
 Os testes de CLI copiam os módulos, SQL e CSV para uma pasta temporária, pois o
 caminho do banco é relativo a `config.py`, não ao diretório de execução. Não
-acessam o banco local. Validação da Etapa 3: **348 testes aprovados**.
+acessam o banco local. Validação final: **374 testes aprovados, sem skips**, inclusive
+em ambiente novo sobre o ZIP extraído (348 anteriores + 26 documentais/de pacote).
+Detalhes em [Validação da entrega](docs/VALIDACAO_ENTREGA.md).
 
 Para executar apenas os testes de simulação, regressão ou demonstração:
 
@@ -354,13 +361,26 @@ phase-07-FIAP-SIFSM/
 │   ├── DOC_NAVEGACAO.md
 │   ├── DOC_SIMULACAO_REGRESSAO.md
 │   ├── PLANO_EQUIPE.md
-│   └── relatorio_tecnico.md
+│   ├── relatorio_tecnico.md
+│   ├── ENTREGA.md
+│   ├── ROTEIRO_VIDEO.md
+│   ├── VALIDACAO_ENTREGA.md
+│   └── DIRECAO_VISUAL.md
+├── circuito_logico.pdf
+├── relatorio_tecnico.pdf
+├── requirements-docs.txt
+├── scripts/
+│   ├── gerar_documentos.py
+│   ├── empacotar.py
+│   └── validar_entrega.py
+├── entrega/                     # ZIP e SHA-256 no repositório, não dentro do ZIP
 ├── tests/
 │   ├── test_agents.py
 │   ├── test_analise_integrada.py
 │   ├── test_banco_dados.py
 │   ├── test_contratos.py
 │   ├── test_demonstracao_energia.py
+│   ├── test_entrega.py
 │   ├── test_estruturas_dados.py
 │   ├── test_gerador_dados.py
 │   ├── test_interface.py
@@ -377,7 +397,11 @@ phase-07-FIAP-SIFSM/
     ├── demonstracao_energia.json
     ├── potencias_por_ciclo.png
     ├── regressao_consumo.png
-    └── residuos_teste.png
+    ├── residuos_teste.png
+    ├── arquitetura.png
+    ├── csv_energia.png
+    ├── csv_regressao.png
+    └── resultado_integrado.json
 ```
 
 | Arquivo | Responsabilidade |
@@ -397,9 +421,12 @@ phase-07-FIAP-SIFSM/
 | `modelo_linear.py` | Modelagem e regressão linear |
 | `demonstracao_energia.py` | Demonstração reproduzível, comparação de cenários, gráficos e JSON |
 | `requirements.txt` | Dependências externas para os módulos analíticos e gráficos |
-| `tests/` | Dezesseis arquivos de testes automatizados |
+| `tests/` | Dezessete arquivos de testes automatizados |
 | `docs/` | Contratos, documentação técnica, plano da equipe e relatório |
 | `graficos_ou_imagens/` | Gráficos e resultados JSON da demonstração |
+| `scripts/` | Reconstrução dos documentos, ZIP determinístico e validação do conteúdo efetivo |
+| `relatorio_tecnico.pdf` | Relatório acadêmico diagramado; fonte textual em docs/relatorio_tecnico.md |
+| `circuito_logico.pdf` | Representações vetoriais AND/OR e tabelas verdade das regras Python |
 
 ### **Banco de dados**
 
@@ -436,6 +463,9 @@ Documentação:
 - [Análise integrada](docs/DOC_ANALISE_INTEGRADA.md).
 - [Navegação e demonstração pelo terminal](docs/DOC_NAVEGACAO.md).
 - [Relatório técnico](docs/relatorio_tecnico.md).
+- [Relatório técnico em PDF](relatorio_tecnico.pdf).
+- [Representação lógica em PDF](circuito_logico.pdf).
+- [Reconstrução, conferência e fechamento da entrega](docs/ENTREGA.md).
 
 ## **Regras de Desenvolvimento**
 
@@ -459,9 +489,31 @@ reservada à entrega completa validada pela equipe.
 
 ## **Entrega Final**
 
-Ao término do projeto, serão preparados os arquivos exigidos pela Fase 07, incluindo relatório técnico, dados simulados, representação lógica, apresentação em vídeo e pasta ZIP.
+O relatório, a representação lógica, as evidências do CSV e o ZIP técnico estão
+preparados. Os PDFs usam apresentação acadêmica ABNT e diagramas/gráficos legíveis.
+Há somente duas pendências humanas: **gravar até cinco minutos** e **publicar no
+YouTube como Não listado, fornecendo `link_video.txt`**. Não há link fictício.
+O ZIP sem esse arquivo ainda não é a entrega acadêmica completa.
 
-O vídeo terá duração máxima de cinco minutos e será publicado no YouTube como "Não listado".
+Para reconstruir e conferir na raiz do projeto:
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -B scripts/gerar_documentos.py
+.\.venv\Scripts\python.exe -X utf8 -B scripts/empacotar.py
+.\.venv\Scripts\python.exe -X utf8 -B scripts/validar_entrega.py --executar
+```
+
+O resultado fica em `entrega/sifsm-entrega.zip` e `entrega/sifsm-entrega.zip.sha256`.
+O manifesto interno registra hashes e a ausência do link. O pacote usa lista
+explícita e não inclui `.venv`, `.git`, `HANDOFF.md`, caches, segredos ou banco local.
+Na cópia extraída, siga a instalação acima, abra `codigo_fonte.py`, importe em
+1 → 9 → IMPORTAR e execute a suíte. Também é possível reconstruir o pacote ali.
+
+Depois da publicação, crie `link_video.txt` na raiz com a URL HTTPS real e use
+`scripts/empacotar.py --final` e `scripts/validar_entrega.py --final --executar`.
+O fechamento falha sem uma URL bem formada; existência, visibilidade, conteúdo
+e duração do vídeo precisam de conferência humana. Veja [Entrega](docs/ENTREGA.md)
+e [Roteiro de até cinco minutos](docs/ROTEIRO_VIDEO.md).
 
 
 ## **Limitações Atuais**
@@ -499,7 +551,7 @@ marciana simulada.
 Essas limitações deverão ser consideradas na interpretação
 dos resultados e no relatório técnico final.
 
-### **Escopo integrado e finalização pendente**
+### **Escopo integrado e pendências humanas**
 
 - As oito opções do menu estão conectadas, sem placeholders. Consultar agentes
   executa a demonstração explicitamente em cada visita, sem depender do cache de importação.
@@ -508,10 +560,12 @@ dos resultados e no relatório técnico final.
   limitações descritas no contrato; não se presume medição de toda a colônia real.
 - R1/R2 podem ser consultadas sem série energética completa. Simulação, regressão
   e análise integrada rejeitam cobertura parcial, medidas/unidades inválidas.
-- O relatório técnico ainda é um rascunho com divergências conhecidas (esquema,
-  RAG/automação e descrição dos modelos); sua revisão completa pertence à Etapa 4.
-- Representação lógica em arquivo, vídeo/link e ZIP reproduzível ainda precisam
-  ser preparados/conferidos. A navegação concluída não equivale à entrega final concluída.
+- O relatório técnico foi reescrito conforme o código: esquema real, bateria ideal,
+  avaliação temporal, arquitetura local e impactos socioambientais, sem alegar
+  RAG, hardware implantado, corte de cargas ou latência nula.
+- Circuito, PDFs e pacote técnico foram preparados na Etapa 4; a situação do
+  ensaio e da revisão está em `docs/VALIDACAO_ENTREGA.md`. Apenas vídeo e publicação/link
+  permanecem pendentes; não declarar submissão completa antes disso.
 
 ### **Modelos e resultados**
 

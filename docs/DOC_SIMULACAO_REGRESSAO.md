@@ -456,9 +456,12 @@ inspecionados visualmente.
    apresentam simulação, regressão e sustentabilidade a partir do banco. A opção 4
    também compara geração agregada −30%; não altera os dados nem o ajuste da reta.
    `main.py` abre a mesma aplicação. Veja [Navegação](DOC_NAVEGACAO.md).
-3. **Equipe — Etapa 4:** consolidar este material no relatório técnico e vídeo,
-   preparar evidências/arquivos e validar a reprodução a partir do ZIP final.
-   O README descreve o estado atual; a integração funcional não conclui a entrega.
+3. **Equipe — Etapa 4:** material consolidado no relatório técnico/PDF e pacote
+   técnico. Os gráficos `csv_energia.png` e `csv_regressao.png`, e o JSON
+   `resultado_integrado.json`, usam os 32 ciclos do CSV e não substituem estas
+   evidências didáticas de 24 ciclos. [Entrega](ENTREGA.md) e
+   [Validação](VALIDACAO_ENTREGA.md) descrevem reconstrução e ensaio do ZIP.
+   Apenas gravação e publicação/link do vídeo permanecem pendentes.
 
 Possíveis extensões após alinhamento: perdas, limites de potência, reserva mínima,
 degradação, dados adicionais e avaliação temporal em mais janelas. Qualquer

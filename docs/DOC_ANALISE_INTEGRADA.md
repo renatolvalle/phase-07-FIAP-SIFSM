@@ -177,17 +177,23 @@ A ligação dos menus à conexão recebida foi implementada na Etapa 3. Importar
 | Referência | Evidência nesta etapa | Complemento da entrega |
 |---|---|---|
 | Banco e erros — enunciado 1.1 | Consultas reais; testes de conexão/esquema/dados inválidos | CRUD existente continua no menu de dados |
-| Lógica — 1.2 | R1/R2 aplicadas às leituras do banco | Representação lógica/evidências na finalização |
+| Lógica — 1.2 | R1/R2 aplicadas às leituras do banco | circuito_logico.pdf preparado na Etapa 4 |
 | Estruturas — 1.3 | Hash pesquisado e fila FIFO de registros reais | Menus na Etapa 3; vídeo pendente |
 | Simulação e matemática — 1.4 | Modelo compartilhado, E = PΔt, déficit/excedente | Exibição unificada implementada na Etapa 3 |
 | Regressão — 1.5 | Exploração, coeficientes, teste temporal, referência e ressalvas | Exibição unificada implementada na Etapa 3 |
 | Agentes — 1.6 | Recomendações com os resultados reais e supervisão humana | Roteamento da Etapa 1 e demonstração explícita no menu 6 |
-| Arquitetura e socioambiental — 1.7/1.8 | Fluxo local, limites de cobertura, ausência de controle automático | Revisão completa do relatório na Etapa 4 |
-| Entrega — seção 2 | Exemplo CLI reproduzível e documentação do contrato | Vídeo, ZIP e validação final na Etapa 4 |
+| Arquitetura e socioambiental — 1.7/1.8 | Fluxo local, limites de cobertura, ausência de controle automático | Relatório completo e PDF acadêmico preparados na Etapa 4 |
+| Entrega — seção 2 | Exemplo CLI reproduzível e documentação do contrato | ZIP técnico/ensaio na Etapa 4; somente vídeo e publicação/link pendentes |
 
 `PLANO_EQUIPE.md` mantém os responsáveis e registra as branches sequenciais de
 finalização. Esta etapa implementa a orquestração; não declara o projeto inteiro
 pronto para entrega.
+
+Na Etapa 4, `graficos_ou_imagens/resultado_integrado.json` registra o retorno
+completo do CSV e o cenário de geração −30%, com hashes das fontes. Os gráficos
+`csv_energia.png` e `csv_regressao.png` usam essa base, não os 24 ciclos da
+demonstração independente. O [relatório](relatorio_tecnico.md) consolida resultados
+e limitações; [ENTREGA.md](ENTREGA.md) descreve o pacote e as pendências humanas.
 
 Testes específicos:
 
