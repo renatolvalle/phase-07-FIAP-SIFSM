@@ -51,13 +51,3 @@ solicitacoes = [
 for req in solicitacoes:
     resposta = sistema_ia.processar(req)
     print(f"[{req}] -> {resposta}")
-
-
-
-def rotear_solicitacao(solicitacao):
-    """Função de contrato para o roteamento de IA."""
-    return sistema_ia.processar(solicitacao)
-
-def gerar_recomendacoes():
-    """Função de contrato para geração de recomendações dos agentes."""
-    return ["Reduzir consumo em módulos não críticos", "Manter monitoramento ativo"]

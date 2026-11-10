@@ -9,7 +9,7 @@ import monitoramento
 import estruturas_dados 
 import simulacao_computacional 
 import modelo_linear 
-import agents 
+import agentes 
 import analise_integrada 
 
 # Verifica a existência e assinatura das funções
@@ -50,7 +50,7 @@ class TestContratos(unittest.TestCase):
             modelo_linear: [
                 "avaliar_e_prever_consumo"
             ],
-            agents: [
+            agentes: [
                 "rotear_solicitacao",
                 "gerar_recomendacoes"
             ],

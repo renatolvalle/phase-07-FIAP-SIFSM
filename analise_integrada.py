@@ -85,13 +85,6 @@ def modelo_linear_previsao():
     consumo_previsto = beta[0] + beta[1] * nova_ocupacao + beta[2] * nova_temp
     print(f"\nPrevisão de Consumo para Ocupação={nova_ocupacao} pessoas e Temp={nova_temp}ºC: {consumo_previsto:.2f} kWh")
 
-def executar_analise_integrada(conexao=None):
-    """Função obrigatória exigida pelos testes de contrato."""
-    simular_consumo_energetico()
-    modelo_linear_previsao()
-    return True
-
 if __name__ == "__main__":
     simular_consumo_energetico()
     modelo_linear_previsao()
-    executar_analise_integrada()
