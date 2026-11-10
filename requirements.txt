@@ -1,3 +1,4 @@
-# Dependências diretas dos gráficos; cálculo numérico usa apenas a biblioteca padrão.
-# Versões verificadas no ambiente virtual local com Python 3.12.
+# Bibliotecas de terceiros usadas nos arquivos Python do projeto.
 matplotlib==3.11.2
+numpy
+pandas
