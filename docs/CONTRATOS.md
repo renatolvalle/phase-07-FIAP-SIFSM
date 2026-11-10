@@ -168,6 +168,69 @@ inválidas, sem recomendação de pico. Sugestões não atestam segurança opera
 
 O retorno conterá `indicadores`, `alertas`, `simulacao`, `previsao`, `recomendacoes` e `limitacoes`.
 
+**Entrada e efeitos:** `conexao` é obrigatória, aberta por `abrir_conexao`, com
+`sqlite3.Row`, chaves estrangeiras habilitadas e esquema previamente inicializado.
+A função usa apenas consultas de `banco_dados.py`. Não abre/fecha a conexão,
+não inicializa tabelas, não importa dados, não faz commit/rollback, não grava
+alertas e não cadastra/atende solicitações. Repetir a análise não duplica registros.
+O chamador é responsável pelo ciclo de vida e por eventual transação de leitura
+consistente caso existam alterações concorrentes.
+
+**Orquestração:** `consultar_leituras` → índice hash de `listar_sensores` e validação
+da cobertura → `obter_serie_energia` → R1/R2 → fila de solicitações pendentes →
+`simular_balanco_energetico` → `avaliar_e_prever_consumo` → `gerar_recomendacoes`.
+Os modelos usam os padrões de `config.py`, sem cálculos analíticos paralelos.
+
+**Campos do retorno:**
+
+| Campo | Conteúdo |
+|---|---|
+| `indicadores` | `quantidade_leituras`, `quantidade_modulos`, `quantidade_sensores`, `quantidade_ciclos` (energéticos), `quantidade_alertas`, `quantidade_solicitacoes_pendentes`; contagens inteiras |
+| `indicadores.consumo_medio_kw`, `indicadores.geracao_media_kw` | Médias dos totais por ciclo da série, não médias de sensores individuais; campos ausentes se não houver energia |
+| `indicadores.indice_sensores` | `dict` indexado pelo código, valores de `listar_sensores`; usado na busca/validação das leituras |
+| `indicadores.fila_solicitacoes` | `list[dict]` de pendentes, ordenada por ID usando a deque FIFO, sem priorização ou atendimento automático |
+| `indicadores.bloqueios_operacionais` | `list[dict]` com `sensor_codigo`, `ciclo` e `motivos` dos bloqueios R2 pelos status atuais; não são novos alertas persistidos |
+| `alertas` | Lista produzida por R1 para as leituras consultadas, não a listagem histórica da tabela `alertas` |
+| `simulacao` | Retorno integral do modelo de bateria ou `{}` quando não houver série energética |
+| `previsao` | Retorno integral da regressão ou `{}` quando houver menos de 10 ciclos |
+| `recomendacoes` | Retorno de `gerar_recomendacoes`, com supervisão humana obrigatória |
+| `limitacoes` | `list[str]` sem duplicatas: políticas da integração, indisponibilidades e ressalvas dos agentes/modelo |
+
+**Semântica dos dados:** a série soma por ciclo as leituras de `consumo_kw` e
+`geracao_kw` de todos os módulos, incluindo histórico de dispositivos hoje
+inativos/em manutenção. R1 considera apenas sensores/módulos atualmente ativos;
+R2 sinaliza sensor inválido ou módulo em manutenção. O banco não registra status
+históricos; bloqueios atuais não apagam medições anteriores nem autorizam operações.
+
+Antes de somar, a análise exige potências finitas não negativas em `kW`, consumo
+e geração presentes e cobertura igual dos sensores energéticos observados em
+todos os ciclos energéticos. Falta de sensor em um desses ciclos é erro; zero
+explicitamente medido é válido. Sensores cadastrados sem nenhuma leitura geram
+uma limitação de cobertura, sem imputação. Lacunas completas de ciclos são aceitas
+com aviso, sem interpolação nem tempo adicional. A soma representa os sensores
+observados, não prova cobertura física de toda a colônia.
+
+**Ausências e erros:** banco vazio ou apenas leituras não energéticas preserva
+contagens/estruturas/regras, com `simulacao={}` e `previsao={}` e médias ausentes.
+De 1 a 9 ciclos válidos, há simulação e previsão indisponível com justificativa.
+Tipo de conexão incorreto gera `TypeError`; fábrica de linhas incompatível,
+unidades, cobertura ou medidas inválidas geram `ValueError`. Erros SQLite e erros
+numéricos dos modelos propagam; não são convertidos em resultados de sucesso.
+
+**Persistência explícita:** caso a aplicação decida guardar alertas, chama
+`registrar_alertas(conexao, resultado["alertas"])` separadamente. Essa função já
+previne duplicação por `(sensor_id, ciclo, regra_codigo)` e rejeita conflitos.
+`criado_em` no alerta calculado é o instante da leitura; na tabela é o instante
+de cadastro definido pela persistência. A análise não altera alertas já gravados.
+
+`demonstrar_analise_integrada()` é uma demonstração auxiliar: cria banco em memória,
+importa o CSV fornecido e fecha somente essa conexão; retorna o mesmo dicionário.
+Executar `analise_integrada.py` imprime esse resultado em JSON. Os auxiliares
+`simular_consumo_energetico()` e `modelo_linear_previsao()` preservam as chamadas
+sem argumentos usadas por `main.py`, imprimem uma demonstração sintética de
+24 ciclos e retornam os dicionários dos modelos compartilhados. Não fazem parte
+do contrato de análise do banco; a ligação dos menus fica para a próxima etapa.
+
 ## **Unidades**
 
 |      Grandeza      | Unidade |

@@ -25,8 +25,9 @@
 O Sistema Integrado de Futuro Sustentável em Marte (SIFSM) é um protótipo acadêmico desenvolvido para organizar informações operacionais da colônia Aurora Siger e auxiliar na utilização sustentável de seus recursos.
 
 O protótipo reúne implementações de banco de dados, estruturas de dados, regras
-booleanas, simulação computacional, modelagem linear e agentes simulados. A
-integração entre todos esses módulos ainda está em andamento.
+booleanas, simulação computacional, modelagem linear e agentes simulados. Esses
+módulos estão conectados pela análise integrada; a ligação aos menus ainda está
+em andamento.
 
 Não será necessário utilizar sensores físicos, APIs externas ou modelos avançados de inteligência artificial.
 
@@ -67,15 +68,18 @@ A suíte automatizada usa `unittest`; veja [Como Executar os Testes](#como-execu
 | Estruturas de dados | Índice hash, fila, pilha e grafo em `estruturas_dados.py` |
 | Simulação e regressão | Implementações em `simulacao_computacional.py` e `modelo_linear.py`; demonstração reproduzível em `demonstracao_energia.py` |
 | Agentes | `agents.py` oferece roteamento com guardrail antes do handoff, recomendações baseadas nos resultados e demonstração explícita, sem execução operacional ou persistência |
-| Análise integrada | `analise_integrada.py` disponibiliza `executar_analise_integrada()` para executar a simulação e a previsão |
-| Menu `main.py` | Executa a simulação/regressão; as opções de banco e agentes ainda não chamam os pontos de entrada explícitos |
+| Análise integrada | `executar_analise_integrada(conexao)` consulta o banco, aplica R1/R2, organiza hash/fila, simula energia, avalia a regressão e gera recomendações; somente leitura |
+| Menu `main.py` | Executa demonstração sintética de simulação/regressão; ainda não chama a análise do banco nem os pontos de entrada de CRUD/agentes |
 | Menu `codigo_fonte.py` | Inicializa o banco e abre o gerenciamento de dados; opções especializadas restantes ainda exibem “Funcionalidade em Desenvolvimento” |
-| Integração | Os menus e alguns módulos especializados ainda não estão completamente integrados entre si |
+| Integração | Fluxo analítico disponível por função e demonstração CLI com CSV em memória; navegação unificada pendente |
 
 ## **Tecnologias**
 - Python: ambiente verificado com **3.12.10** no Windows.
 - SQLite, por meio de `sqlite3`, e demais bibliotecas padrão do Python.
-- NumPy, Pandas e **Matplotlib 3.11.2**, declarados em `requirements.txt`.
+- NumPy, Pandas e **Matplotlib 3.11.2** permanecem declarados em `requirements.txt`.
+  A análise integrada e os modelos numéricos usam a biblioteca padrão; Matplotlib
+  é carregado apenas na demonstração gráfica. A antiga análise paralela com
+  NumPy/Pandas foi substituída pelos modelos compartilhados.
 
 ### **Instalação em ambiente virtual**
 
@@ -110,8 +114,9 @@ Os exemplos abaixo são executados a partir da raiz do repositório.
 .\.venv\Scripts\python.exe -X utf8 -B main.py
 ```
 
-No menu de `main.py`, escolha `2` para executar a simulação energética e a
-previsão linear, ou `4` para sair. A opção `3` apenas importa os agentes e ainda
+No menu de `main.py`, escolha `2` para executar uma demonstração sintética de
+simulação e previsão (24 ciclos, sem consultar o banco), ou `4` para sair.
+A opção `3` apenas importa os agentes e ainda
 precisa chamar a demonstração explícita, pois importar o módulo não a executa.
 A opção `1` importa `codigo_fonte.py`, mas não inicia o menu de banco de dados.
 
@@ -176,6 +181,43 @@ Nos comandos de execução e testes, em Linux/macOS, substitua
 
 As fórmulas, os contratos de retorno e os resultados estão detalhados em
 [Simulação e regressão](docs/DOC_SIMULACAO_REGRESSAO.md).
+
+### **Análise integrada com o CSV do projeto**
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -B analise_integrada.py
+```
+
+Esse comando importa `dados_aurora_siger.csv` em um SQLite **em memória**, executa
+o fluxo completo e imprime o resultado em JSON. Não abre o banco local nem gera
+arquivos. Na base fornecida: 5 módulos, 10 sensores, 320 leituras, 32 ciclos e
+19 alertas calculados. A regressão usa 25 ciclos de treino e 7 de teste, prevendo
+os ciclos 33–35. Importar o módulo não executa a demonstração.
+
+Para analisar o banco já inicializado pela aplicação:
+
+```python
+from contextlib import closing
+from banco_dados import abrir_conexao
+from analise_integrada import executar_analise_integrada
+
+with closing(abrir_conexao()) as conexao:
+    resultado = executar_analise_integrada(conexao)
+    print(resultado["indicadores"])
+    print(resultado["recomendacoes"])
+    print(resultado["limitacoes"])
+```
+
+O exemplo pressupõe o esquema existente; `abrir_conexao()` cria o arquivo se
+ausente, mas a análise não cria tabelas nem importa dados automaticamente.
+Ela não grava alertas, não cria/atende solicitações e não confirma transações.
+Sem energia, retorna simulação/previsão vazias; com menos de 10 ciclos, apenas
+a previsão fica indisponível. Leituras energéticas incompletas ou inválidas
+geram erro, em vez de serem substituídas por zero.
+
+Veja [Análise integrada](docs/DOC_ANALISE_INTEGRADA.md) para políticas de cobertura,
+unidades, persistência explícita, resultados e limitações. Os menus ainda serão
+conectados a essa função na etapa de navegação.
 
 ### **Gerar os dados iniciais**
 
@@ -253,6 +295,7 @@ Para executar apenas os testes de simulação, regressão ou demonstração:
 .\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p "test_simulacao_computacional.py" -v
 .\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p "test_modelo_linear.py" -v
 .\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p "test_demonstracao_energia.py" -v
+.\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p "test_analise_integrada.py" -v
 ```
 
 ## **Estrutura do Projeto**
@@ -278,12 +321,14 @@ phase-07-FIAP-SIFSM/
 ├── simulacao_computacional.py
 ├── docs/
 │   ├── CONTRATOS.md
+│   ├── DOC_ANALISE_INTEGRADA.md
 │   ├── DOC_MONITORAMENTO_ESTRUTURAS.md
 │   ├── DOC_SIMULACAO_REGRESSAO.md
 │   ├── PLANO_EQUIPE.md
 │   └── relatorio_tecnico.md
 ├── tests/
 │   ├── test_agents.py
+│   ├── test_analise_integrada.py
 │   ├── test_banco_dados.py
 │   ├── test_contratos.py
 │   ├── test_demonstracao_energia.py
@@ -306,7 +351,7 @@ phase-07-FIAP-SIFSM/
 | `main.py` | Menu de entrada para a simulação/regressão, com integração de banco e agentes pendente |
 | `codigo_fonte.py` | Menu de gerenciamento de dados, CRUD e interface SQLite |
 | `agents.py` | Simulação de agentes e regras de guardrail |
-| `analise_integrada.py` | Simulação e previsão executadas pelo `main.py`; também expõe `executar_analise_integrada()` |
+| `analise_integrada.py` | Orquestração somente de leitura com conexão recebida; demonstração CSV em memória e adaptadores sintéticos para o menu atual |
 | `config.py` | Configurações compartilhadas |
 | `banco_dados.py` | Persistência e operações SQLite |
 | `banco_aurora_siger.sql` | Esquema relacional do banco |
@@ -318,7 +363,7 @@ phase-07-FIAP-SIFSM/
 | `modelo_linear.py` | Modelagem e regressão linear |
 | `demonstracao_energia.py` | Demonstração reproduzível, comparação de cenários, gráficos e JSON |
 | `requirements.txt` | Dependências externas para os módulos analíticos e gráficos |
-| `tests/` | Dez arquivos de testes automatizados |
+| `tests/` | Onze arquivos de testes automatizados |
 | `docs/` | Contratos, documentação técnica, plano da equipe e relatório |
 | `graficos_ou_imagens/` | Gráficos e resultados JSON da demonstração |
 
@@ -354,6 +399,7 @@ Documentação:
 - [Plano da equipe](docs/PLANO_EQUIPE.md).
 - [Monitoramento e estruturas](docs/DOC_MONITORAMENTO_ESTRUTURAS.md).
 - [Simulação e regressão](docs/DOC_SIMULACAO_REGRESSAO.md).
+- [Análise integrada](docs/DOC_ANALISE_INTEGRADA.md).
 - [Relatório técnico](docs/relatorio_tecnico.md).
 
 ## **Regras de Desenvolvimento**
@@ -424,8 +470,11 @@ dos resultados e no relatório técnico final.
   integração e não executam os módulos correspondentes.
 - A opção de banco de dados do `main.py` importa `codigo_fonte.py`, mas não abre
   seu menu.
-- É necessário definir a agregação dos sensores e se a série representa um
-  módulo ou toda a colônia antes de conectar `obter_serie_energia()` às análises.
+- A análise já usa `obter_serie_energia()`: soma por ciclo dos sensores energéticos
+  com leituras, de todos os módulos. Cobertura parcial e status atuais têm as
+  limitações descritas no contrato; não se presume medição de toda a colônia real.
+- A opção 2 de `main.py` mantém a demonstração sintética; falta conectá-la ao
+  fluxo de dados da aplicação, junto das demais opções especializadas.
 - O menu de agentes ainda precisa chamar `agents.demonstrar_agentes()`;
   os testes já verificam as assinaturas, os retornos e os guardrails de `agents.py`.
 
