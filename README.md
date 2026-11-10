@@ -215,6 +215,16 @@ Sem energia, retorna simulação/previsão vazias; com menos de 10 ciclos, apena
 a previsão fica indisponível. Leituras energéticas incompletas ou inválidas
 geram erro, em vez de serem substituídas por zero.
 
+**Qualidade da previsão:** na base CSV atual a regressão não supera a média do
+treino pelo MAE. As previsões e métricas da reta são preservadas para inspeção,
+mas não fundamentam recomendações de pico/tendência. A sugestão usa a média dos
+25 ciclos de treino, **5,344 kW**, como referência constante por ciclo, não como
+pico nem garantia de atendimento. A mesma proteção vale para empate e previsões
+negativas no teste/futuro. Sem avaliação completa ou referência necessária, o
+sistema se abstém de recomendar estimativas preditivas; nunca substitui a média
+do treino pela média global. A comparação nessa janela não garante desempenho
+futuro e toda sugestão exige validação humana.
+
 Veja [Análise integrada](docs/DOC_ANALISE_INTEGRADA.md) para políticas de cobertura,
 unidades, persistência explícita, resultados e limitações. Os menus ainda serão
 conectados a essa função na etapa de navegação.

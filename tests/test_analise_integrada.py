@@ -71,6 +71,10 @@ class TestAnaliseIntegrada(unittest.TestCase):
         self.assertGreater(resultado["previsao"]["metricas"]["mae_kw"],
                            resultado["previsao"]["metricas"]["mae_referencia_kw"])
         self.assertIn("não superou a referência", " ".join(resultado["limitacoes"]))
+        energia = " ".join(resultado["recomendacoes"]["energia"])
+        self.assertIn("Estimativa de referência pela média do treino", energia)
+        self.assertNotIn("Pico de consumo previsto", energia)
+        self.assertNotIn("Tendência de aumento", energia)
         self.assertTrue(resultado["recomendacoes"]["supervisao_humana"])
         self.assertTrue(resultado["limitacoes"])
         self.assertEqual(len(resultado["limitacoes"]), len(set(resultado["limitacoes"])))
@@ -100,6 +104,23 @@ class TestAnaliseIntegrada(unittest.TestCase):
             resultado["simulacao"], resultado["previsao"],
         ))
 
+    def test_referencia_csv_calculada_apenas_no_treino_sem_alterar_regressao(self):
+        self.carregar_csv()
+        serie = banco_dados.obter_serie_energia(self.conexao)
+        corte = len(serie) * 4 // 5
+        media_treino = sum(r["consumo_kw"] for r in serie[:corte]) / corte
+        resultado = self.analisar()
+        metricas = resultado["previsao"]["metricas"]
+        self.assertAlmostEqual(metricas["consumo_medio_treino_kw"], media_treino)
+        self.assertNotAlmostEqual(media_treino, metricas["consumo_medio_kw"])
+        self.assertAlmostEqual(metricas["mae_kw"], 0.2766813186813189)
+        self.assertAlmostEqual(metricas["mae_referencia_kw"], 0.27228571428571435)
+        self.assertAlmostEqual(metricas["r2"], -0.019327507692308732)
+        self.assertAlmostEqual(resultado["previsao"]["previsoes"][0]["consumo_previsto_kw"],
+                               5.282461538461538)
+        self.assertIn(f"média do treino: {media_treino:g} kW",
+                      " ".join(resultado["recomendacoes"]["energia"]))
+
     def test_serie_conhecida_unidades_coeficientes_e_balanco(self):
         self.criar_serie()
         resultado = self.analisar()
@@ -113,6 +134,10 @@ class TestAnaliseIntegrada(unittest.TestCase):
         self.assertAlmostEqual(resultado["previsao"]["metricas"]["mae_kw"], 0)
         self.assertEqual([p["consumo_previsto_kw"] for p in resultado["previsao"]["previsoes"]],
                          [13, 14, 15])
+        energia = " ".join(resultado["recomendacoes"]["energia"])
+        self.assertIn("Pico de consumo previsto de 15 kW", energia)
+        self.assertIn("Tendência de aumento", energia)
+        self.assertNotIn("Estimativa de referência pela média do treino", energia)
 
     def test_alterar_dados_altera_analise_sem_dados_sinteticos(self):
         self.criar_serie()
@@ -214,12 +239,17 @@ class TestAnaliseIntegrada(unittest.TestCase):
         self.assertIsNone(resultado["previsao"]["metricas"]["r2"])
         self.assertEqual(len(resultado["previsao"]["previsoes"]), 3)
         self.assertIn("R²", " ".join(resultado["limitacoes"]))
+        self.assertIn("média do treino: 0 kW", " ".join(resultado["recomendacoes"]["energia"]))
+        self.assertNotIn("Pico de consumo previsto", " ".join(resultado["recomendacoes"]["energia"]))
 
     def test_previsao_negativa_preservada_e_sinalizada(self):
         self.criar_serie(consumo=lambda ciclo: 10 - ciclo)
         resultado = self.analisar()
         self.assertLess(resultado["previsao"]["previsoes"][0]["consumo_previsto_kw"], 0)
         self.assertIn("negativ", " ".join(resultado["limitacoes"]).lower())
+        self.assertIn("Estimativa de referência pela média do treino",
+                      " ".join(resultado["recomendacoes"]["energia"]))
+        self.assertNotIn("Pico de consumo previsto", " ".join(resultado["recomendacoes"]["energia"]))
 
     def test_lacunas_nao_geram_amostras_ou_energia_artificial(self):
         self.criar_serie()

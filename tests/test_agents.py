@@ -120,7 +120,10 @@ class TestRecomendacoes(unittest.TestCase):
         }}
         self.previsao = {
             "coeficientes": {"inclinacao_kw_por_ciclo": 0.2},
-            "metricas": {"mae_kw": 0.1, "mae_referencia_kw": 0.5, "r2": 0.8},
+            "metricas": {
+                "mae_kw": 0.1, "mae_referencia_kw": 0.5, "r2": 0.8,
+                "consumo_medio_treino_kw": 4.0, "quantidade_previsoes_negativas_teste": 0,
+            },
             "previsoes": [{"ciclo": 11, "consumo_previsto_kw": 7.5}],
             "limitacoes": ["Extrapolação temporal."],
         }
@@ -207,13 +210,75 @@ class TestRecomendacoes(unittest.TestCase):
         resultado = self.gerar()
         self.assertIn("fisicamente inválida", " ".join(resultado["limitacoes"]))
         self.assertNotIn("Pico de consumo previsto", " ".join(resultado["energia"]))
+        self.assertNotIn("Tendência de aumento", " ".join(resultado["energia"]))
+        self.assertIn("média do treino: 4 kW", " ".join(resultado["energia"]))
         self.assertEqual(self.previsao["previsoes"][-1]["consumo_previsto_kw"], -1)
 
     def test_modelo_sem_ganho_sobre_referencia_recebe_ressalva(self):
         for mae in (0.5, 0.8):
             with self.subTest(mae=mae):
                 self.previsao["metricas"]["mae_kw"] = mae
-                self.assertIn("não superou a referência", " ".join(self.gerar()["limitacoes"]))
+                resultado = self.gerar()
+                energia = " ".join(resultado["energia"])
+                self.assertIn("não superou a referência", " ".join(resultado["limitacoes"]))
+                self.assertNotIn("Pico de consumo previsto", energia)
+                self.assertNotIn("Tendência de aumento", energia)
+                self.assertIn("média do treino: 4 kW", energia)
+                self.assertIn("não representa pico", energia)
+                self.assertIn("Déficit simulado", energia)
+
+    def test_ganho_positivo_preserva_recomendacao_e_nao_usa_referencia(self):
+        resultado = self.gerar()
+        energia = " ".join(resultado["energia"])
+        self.assertIn("Pico de consumo previsto de 7.5 kW", energia)
+        self.assertIn("Tendência de aumento", energia)
+        self.assertNotIn("Estimativa de referência pela média do treino", energia)
+        self.assertTrue(resultado["supervisao_humana"])
+
+    def test_sem_media_treino_nao_substitui_por_media_global(self):
+        self.previsao["metricas"]["mae_kw"] = 0.8
+        del self.previsao["metricas"]["consumo_medio_treino_kw"]
+        self.previsao["metricas"]["consumo_medio_kw"] = 999
+        resultado = self.gerar()
+        self.assertNotIn("Estimativa de referência pela média do treino", " ".join(resultado["energia"]))
+        self.assertNotIn("Pico de consumo previsto", " ".join(resultado["energia"]))
+        self.assertIn("Não substituir pela média global", " ".join(resultado["limitacoes"]))
+        self.assertIn("Consumo médio histórico informado", " ".join(resultado["energia"]))
+        self.assertIn("sem tratá-lo como previsão", " ".join(resultado["energia"]))
+
+    def test_avaliacao_incompleta_abstem_sem_endossar_previsoes(self):
+        for campo in ("mae_kw", "mae_referencia_kw", "quantidade_previsoes_negativas_teste"):
+            with self.subTest(campo=campo):
+                previsao = deepcopy(self.previsao)
+                del previsao["metricas"][campo]
+                resultado = agents.gerar_recomendacoes({}, [], {}, previsao)
+                self.assertEqual(resultado["energia"], [])
+                self.assertIn("Avaliação preditiva incompleta", " ".join(resultado["limitacoes"]))
+
+    def test_negativa_no_teste_bloqueia_mesmo_com_futuro_positivo_e_mae_menor(self):
+        self.previsao["metricas"]["quantidade_previsoes_negativas_teste"] = 1
+        resultado = self.gerar()
+        energia = " ".join(resultado["energia"])
+        self.assertNotIn("Pico de consumo previsto", energia)
+        self.assertNotIn("Tendência de aumento", energia)
+        self.assertIn("média do treino: 4 kW", energia)
+        self.assertIn("fisicamente inválida no teste", " ".join(resultado["limitacoes"]))
+
+    def test_referencia_zero_valida_e_sem_previsoes_nao_cria_estimativa(self):
+        self.previsao["metricas"].update(mae_kw=0, mae_referencia_kw=0, consumo_medio_treino_kw=0)
+        self.assertIn("média do treino: 0 kW", " ".join(self.gerar()["energia"]))
+        self.previsao["previsoes"] = []
+        self.assertNotIn("Estimativa de referência", " ".join(self.gerar()["energia"]))
+
+    def test_selecao_da_referencia_nao_altera_entradas_ou_previsoes_originais(self):
+        self.previsao["metricas"]["mae_kw"] = 0.8
+        copia = deepcopy(self.previsao)
+        primeira = self.gerar()
+        self.assertEqual(self.previsao, copia)
+        self.assertEqual(self.previsao["previsoes"][0]["consumo_previsto_kw"], 7.5)
+        self.assertEqual(primeira, self.gerar())
+        primeira["energia"].clear()
+        self.assertIn("média do treino: 4 kW", " ".join(self.gerar()["energia"]))
 
     def test_r2_indefinido_e_negativo_sao_tratados_sem_falsear_metrica(self):
         self.previsao["metricas"]["r2"] = None
@@ -271,6 +336,12 @@ class TestRecomendacoes(unittest.TestCase):
             (3, "metricas", "mae_kw", -1),
             (3, "metricas", "mae_referencia_kw", True),
             (3, "metricas", "r2", float("inf")),
+            (3, "metricas", "consumo_medio_treino_kw", -1),
+            (3, "metricas", "consumo_medio_treino_kw", float("nan")),
+            (3, "metricas", "consumo_medio_treino_kw", True),
+            (3, "metricas", "quantidade_previsoes_negativas_teste", -1),
+            (3, "metricas", "quantidade_previsoes_negativas_teste", 1.5),
+            (3, "metricas", "quantidade_previsoes_negativas_teste", True),
         )
         for indice, grupo, campo, valor in casos:
             with self.subTest(campo=campo, valor=valor):

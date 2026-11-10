@@ -161,6 +161,10 @@ def gerar_recomendacoes(indicadores, alertas, simulacao, previsao):
     inclinacao = _numero_opcional(coeficientes, "inclinacao_kw_por_ciclo")
     mae = _numero_opcional(metricas, "mae_kw", minimo=0)
     mae_referencia = _numero_opcional(metricas, "mae_referencia_kw", minimo=0)
+    media_treino = _numero_opcional(metricas, "consumo_medio_treino_kw", minimo=0)
+    negativas_teste = _numero_opcional(
+        metricas, "quantidade_previsoes_negativas_teste", minimo=0, inteiro=True,
+    )
     if metricas.get("r2") is not None:
         _numero_opcional(metricas, "r2")
 
@@ -180,7 +184,10 @@ def gerar_recomendacoes(indicadores, alertas, simulacao, previsao):
     if quantidade is None or quantidade == 0:
         limitacoes.append("Leituras indisponíveis ou ausentes: não é possível atestar a situação operacional.")
     if consumo_medio is not None and quantidade != 0:
-        energia.append(f"Usar o consumo médio informado de {consumo_medio:g} kW como referência para revisão humana.")
+        energia.append(
+            f"Consumo médio histórico informado: {consumo_medio:g} kW; revisar com a equipe, "
+            "sem tratá-lo como previsão de demanda futura."
+        )
     if alertas:
         manutencao.append(
             f"Revisar {len(alertas)} alerta(s) recebido(s) com a equipe responsável; "
@@ -203,22 +210,55 @@ def gerar_recomendacoes(indicadores, alertas, simulacao, previsao):
             energia.append("Bateria esgotada ao final da simulação (SoC 0%): solicitar avaliação humana da reserva.")
         if deficit is None:
             limitacoes.append("Déficit da simulação não informado; não se pode concluir atendimento integral.")
-    if inclinacao is not None and inclinacao > 0:
-        energia.append(
-            f"Tendência de aumento de {inclinacao:g} kW por ciclo: revisar o planejamento "
-            "energético com supervisão humana; associação não implica causalidade."
+    # Preservar previsões/métricas não significa endossá-las para recomendações.
+    # Sem evidência de ganho no teste, a reta permanece apenas para inspeção.
+    comparacao_disponivel = mae is not None and mae_referencia is not None
+    sem_ganho = comparacao_disponivel and mae >= mae_referencia
+    previsao_negativa = any(consumo < 0 for consumo in consumos_previstos)
+    if previsao_negativa or (negativas_teste is not None and negativas_teste > 0):
+        limitacoes.append(
+            "Previsão negativa, fisicamente inválida no teste ou no horizonte futuro: "
+            "não usar a regressão para recomendações preditivas."
+        )
+    if sem_ganho:
+        limitacoes.append(
+            "Modelo sem ganho preditivo demonstrado: não superou a referência pelo MAE; "
+            "a regressão é mantida para inspeção, sem recomendar seu pico ou tendência."
         )
     if not consumos_previstos:
         limitacoes.append("Previsão indisponível: obter série suficiente antes de estimar consumo futuro.")
-    elif any(consumo < 0 for consumo in consumos_previstos):
-        limitacoes.append("Previsão negativa, fisicamente inválida: não usar para decisões operacionais.")
+    elif not comparacao_disponivel or negativas_teste is None:
+        limitacoes.append(
+            "Avaliação preditiva incompleta: informar MAE da regressão e da referência "
+            "e quantidade de previsões negativas no teste antes de recomendar estimativas."
+        )
+    elif sem_ganho or previsao_negativa or negativas_teste > 0:
+        if media_treino is None:
+            limitacoes.append(
+                "Referência indisponível: média do treino não informada; nenhuma "
+                "estimativa preditiva recomendada. Não substituir pela média global."
+            )
+        else:
+            energia.append(
+                f"Estimativa de referência pela média do treino: {media_treino:g} kW, "
+                "constante para cada ciclo do horizonte informado; não representa "
+                "pico nem garantia de atendimento. Validar com a equipe."
+            )
+            limitacoes.append(
+                "A referência constante também não garante demanda futura. A escolha "
+                "usa a mesma janela de teste, sem avaliação independente da seleção."
+            )
     else:
+        if inclinacao is not None and inclinacao > 0:
+            energia.append(
+                f"Tendência de aumento de {inclinacao:g} kW por ciclo: revisar o planejamento "
+                "energético com supervisão humana; associação não implica causalidade."
+            )
         energia.append(
             f"Pico de consumo previsto de {max(consumos_previstos):g} kW: avaliar capacidade "
-            "de atendimento; extrapolação não garante demanda futura."
+            "de atendimento; menor MAE nesta janela não garante demanda futura "
+            "na extrapolação."
         )
-    if mae is not None and mae_referencia is not None and mae >= mae_referencia:
-        limitacoes.append("O modelo não superou a referência pelo MAE; revisar sua utilidade antes de apoiar decisões.")
     if "r2" in metricas and metricas["r2"] is None:
         limitacoes.append("R² indefinido: não interpretar como porcentagem de acertos.")
     limitacoes.extend(f"Modelo linear: {texto}" for texto in limitacoes_modelo)

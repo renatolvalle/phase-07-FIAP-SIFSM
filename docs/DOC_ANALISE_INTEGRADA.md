@@ -38,7 +38,10 @@ e dados já preparados; o chamador continua responsável por fechá-la.
 7. `avaliar_e_prever_consumo`: regressão simples ciclo → consumo, ajuste nos
    primeiros 80% e métricas nos últimos 20%; somente com pelo menos 10 ciclos.
 8. `gerar_recomendacoes`: usa os indicadores, alertas e os dois resultados reais;
-   retorna sugestões e ressalvas com supervisão humana obrigatória.
+   retorna sugestões e ressalvas com supervisão humana obrigatória. A regressão
+   só fundamenta pico/tendência se superar a referência por MAE e não produzir
+   negativas no teste/futuro; do contrário, a sugestão usa a média do treino
+   explicitamente identificada como referência, quando disponível.
 
 Listas armazenam leituras, histórico e previsões. Não há necessidade de inserir
 pilha ou grafo artificialmente nesse fluxo: o enunciado exige uso coerente, não
@@ -113,13 +116,41 @@ Com os parâmetros padrão da configuração e o CSV atual:
 | Intercepto / inclinação | 5,384 kW / −0,003076923 kW por ciclo |
 | MAE / RMSE no teste | 0,2766813 / 0,3016809 kW |
 | R² / MAE da referência | −0,0193275 / 0,2722857 kW |
+| Média somente do treino (referência constante) | 5,344 kW |
 | Previsões dos ciclos 33 / 34 / 35 | 5,2824615 / 5,2793846 / 5,2763077 kW |
 
 O modelo **não supera a referência pela MAE** nesse conjunto. R² negativo não é
 percentual de acertos. Esses resultados são preservados e sinalizados pelos
-agentes, sem forçar uma avaliação positiva. O déficit é resultado da bateria
+agentes, sem forçar uma avaliação positiva. A recomendação preditiva passa a usar
+**5,344 kW por ciclo, a média dos 25 ciclos de treino**, e não o pico da reta.
+As previsões dos ciclos 33–35 na tabela/JSON continuam sendo as da regressão,
+para inspeção acadêmica; não são as estimativas recomendadas neste conjunto.
+O déficit é resultado da bateria
 ideal e dos dados simulados, não diagnóstico de um equipamento real. A ligeira
 tendência decrescente não demonstra causalidade nem garante demanda futura.
+
+### Política de escolha e abstenção
+
+- Compara-se o MAE da reta com o MAE da média do treino na mesma janela de teste.
+  MAE estritamente menor e ausência de previsões negativas no teste/futuro permitem
+  sugestão de pico/tendência, sempre para revisão humana e sem garantia futura.
+- Empate ou MAE pior: **modelo sem ganho preditivo demonstrado**. A reta não
+  fundamenta pico/tendência nas recomendações. Uma previsão fisicamente inválida
+  também impede esse uso, ainda que o MAE médio seja menor.
+- A alternativa é a média **apenas do treino**, constante em cada ciclo do
+  horizonte, não um pico. O modelo agora expõe `consumo_medio_treino_kw` e
+  `quantidade_previsoes_negativas_teste` dentro de `metricas`; as chaves principais
+  e os resultados anteriores permanecem preservados.
+- Sem avaliação completa ou sem previsões: não se recomenda estimativa preditiva.
+  Se for necessário recorrer à referência mas a média do treino estiver ausente,
+  também há abstenção; não se aproveita a média de toda a série como substituta.
+- Não há reajuste ou fabricação de dados. A referência também pode falhar; a
+  escolha nessa mesma janela não tem validação independente. Não afirmar que o
+  método escolhido garante desempenho futuro ou dimensiona capacidade física.
+
+Essa política altera as sugestões dos agentes, não o retorno bruto da regressão.
+Alertas, fila, indicadores e sugestões baseadas no balanço energético observado
+permanecem válidos em seu escopo, mesmo quando não se endossa o modelo preditivo.
 
 ## Compatibilidade com a navegação atual
 
@@ -160,5 +191,11 @@ Cobrem CSV real, cálculos independentes e série manual conhecida, mudança dos
 dados, hash/fila, ausência de escritas/transações, persistência explícita idempotente,
 vazio, 1/9/10 ciclos, cobertura, unidades, valores inválidos, status atuais,
 R² indefinido/previsão negativa, propagação de erros, importação silenciosa,
-CLI sem arquivos e repetição da opção existente do menu. Tudo usa bancos em
+CLI sem arquivos, regressão melhor/pior/empatada, referência exclusiva do treino,
+abstenção sem métricas e repetição da opção existente do menu. Tudo usa bancos em
 memória ou diretórios temporários, sem acesso ao banco local.
+
+Validação local da revisão da Etapa 2: **272 testes aprovados** na suíte completa,
+dependências sem incompatibilidades (`pip check`), sintaxe e assinaturas contratuais
+verificadas. Os oito novos testes desta revisão, além dos cenários reforçados,
+cobrem a seleção/abstenção sem alterar os resultados da regressão ou os dados.
