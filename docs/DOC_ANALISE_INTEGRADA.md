@@ -152,17 +152,25 @@ Essa política altera as sugestões dos agentes, não o retorno bruto da regress
 Alertas, fila, indicadores e sugestões baseadas no balanço energético observado
 permanecem válidos em seu escopo, mesmo quando não se endossa o modelo preditivo.
 
-## Compatibilidade com a navegação atual
+## Navegação integrada e demonstrações independentes
 
-`main.py` ainda chama `simular_consumo_energetico()` e `modelo_linear_previsao()`.
-Esses nomes foram mantidos como adaptadores: usam os 24 ciclos sintéticos de
+`codigo_fonte.py` é a entrada principal e `main.py` encaminha à mesma aplicação.
+As opções 4, 5 e 7 chamam `executar_analise_integrada(conexao)` e apresentam os
+resultados do SQLite; não substituem dados ausentes por uma série demonstrativa.
+A opção 7 exibe o fluxo completo, inclusive hash/fila, R1/R2, energia, regressão,
+recomendações, impactos e limitações. A opção 4 compara geração −30% com o cenário
+base validado. Registro explícito de R1 fica na opção 2; não altera esta análise.
+Veja [Navegação](DOC_NAVEGACAO.md).
+
+`simular_consumo_energetico()` e `modelo_linear_previsao()` permanecem auxiliares
+independentes: usam os 24 ciclos sintéticos de
 `demonstracao_energia.criar_serie_demonstracao` e os mesmos modelos especializados,
 sem NumPy/Pandas, gráficos ou banco. Retornam os dicionários dos modelos e imprimem
-resultados com unidades. Substituem a antiga senoide/modelagem paralela; portanto
-os números exibidos nessa opção mudam. Não são o fluxo integrado com o CSV.
+resultados com unidades. Substituem a antiga senoide/modelagem paralela, mas não
+são o fluxo integrado com o CSV nem opções do menu atual.
 
-A ligação dos menus à conexão recebida continua sendo a Etapa 3. Importar
-`analise_integrada` não imprime nada nem abre conexões ou bibliotecas gráficas.
+A ligação dos menus à conexão recebida foi implementada na Etapa 3. Importar
+`analise_integrada` ou as entradas não imprime nada nem abre conexões ou bibliotecas gráficas.
 
 ## Verificação do escopo
 
@@ -170,10 +178,10 @@ A ligação dos menus à conexão recebida continua sendo a Etapa 3. Importar
 |---|---|---|
 | Banco e erros — enunciado 1.1 | Consultas reais; testes de conexão/esquema/dados inválidos | CRUD existente continua no menu de dados |
 | Lógica — 1.2 | R1/R2 aplicadas às leituras do banco | Representação lógica/evidências na finalização |
-| Estruturas — 1.3 | Hash pesquisado e fila FIFO de registros reais | Apresentação nos menus/vídeo |
-| Simulação e matemática — 1.4 | Modelo compartilhado, E = PΔt, déficit/excedente | Exibição unificada na Etapa 3 |
-| Regressão — 1.5 | Exploração, coeficientes, teste temporal, referência e ressalvas | Exibição unificada na Etapa 3 |
-| Agentes — 1.6 | Recomendações com os resultados reais e supervisão humana | Roteamento já tratado na Etapa 1; navegação na Etapa 3 |
+| Estruturas — 1.3 | Hash pesquisado e fila FIFO de registros reais | Menus na Etapa 3; vídeo pendente |
+| Simulação e matemática — 1.4 | Modelo compartilhado, E = PΔt, déficit/excedente | Exibição unificada implementada na Etapa 3 |
+| Regressão — 1.5 | Exploração, coeficientes, teste temporal, referência e ressalvas | Exibição unificada implementada na Etapa 3 |
+| Agentes — 1.6 | Recomendações com os resultados reais e supervisão humana | Roteamento da Etapa 1 e demonstração explícita no menu 6 |
 | Arquitetura e socioambiental — 1.7/1.8 | Fluxo local, limites de cobertura, ausência de controle automático | Revisão completa do relatório na Etapa 4 |
 | Entrega — seção 2 | Exemplo CLI reproduzível e documentação do contrato | Vídeo, ZIP e validação final na Etapa 4 |
 
@@ -192,10 +200,13 @@ dados, hash/fila, ausência de escritas/transações, persistência explícita i
 vazio, 1/9/10 ciclos, cobertura, unidades, valores inválidos, status atuais,
 R² indefinido/previsão negativa, propagação de erros, importação silenciosa,
 CLI sem arquivos, regressão melhor/pior/empatada, referência exclusiva do treino,
-abstenção sem métricas e repetição da opção existente do menu. Tudo usa bancos em
+abstenção sem métricas e repetição dos auxiliares sintéticos. A navegação atual
+tem testes próprios em `test_navegacao.py`. Tudo usa bancos em
 memória ou diretórios temporários, sem acesso ao banco local.
 
 Validação local da revisão da Etapa 2: **272 testes aprovados** na suíte completa,
 dependências sem incompatibilidades (`pip check`), sintaxe e assinaturas contratuais
 verificadas. Os oito novos testes desta revisão, além dos cenários reforçados,
 cobrem a seleção/abstenção sem alterar os resultados da regressão ou os dados.
+Após integração dos menus na Etapa 3: **348 testes aprovados**, incluindo fluxos
+das duas entradas em cópias isoladas e comparação dos números exibidos com o CSV.

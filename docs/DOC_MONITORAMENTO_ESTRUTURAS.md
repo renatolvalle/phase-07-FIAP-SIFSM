@@ -1,7 +1,8 @@
 # **SIFSM - Documentação: Monitoramento e Estruturas de Dados**
 
 - **Responsável:** Renato Valle
-- **Arquivos:** `monitoramento.py`, `estruturas_dados.py`, `circuito_logico.pdf`
+- **Arquivos implementados:** `monitoramento.py`, `estruturas_dados.py`; interface em `codigo_fonte.py`
+- **Artefato pendente:** representação lógica em arquivo para conferência na Etapa 4
 - **Testes:** `tests/test_monitoramento.py`, `tests/test_estruturas_dados.py`
 - **Itens do enunciado atendidos:** 1.2 (circuitos lógicos, sensores simulados e automação) e 1.3 (estruturas de dados)
 
@@ -53,7 +54,10 @@ A função `gerar_tabela_verdade_bloqueio()` devolve essa tabela como `list[dict
 
 ### **1.3 Representação lógica**
 
-O arquivo `circuito_logico.pdf` mostra as duas regras como circuito (porta AND para a R1 e porta OR para a R2), com a expressão booleana e a tabela verdade de cada uma. Os testes verificam que as tabelas verdade são coerentes com o comportamento das funções.
+As expressões e tabelas verdade acima representam as portas AND (R1) e OR (R2)
+e são exibidas pela opção 2 da aplicação quando há leituras. Os testes conferem
+a coerência com as funções. Nenhum `circuito_logico.pdf` foi encontrado na
+verificação desta etapa; não considerar o artefato entregue antes da Etapa 4.
 
 ### **1.4 Decisões técnicas**
 
@@ -100,6 +104,13 @@ O arquivo `circuito_logico.pdf` mostra as duas regras como circuito (porta AND p
 ---
 
 ## **3. Testes**
+
+Na navegação integrada, opção 2 consulta/calcula R1/R2 e só grava R1 após
+`REGISTRAR`. A opção 3 oferece hash, cadastro administrativo de solicitações,
+FIFO temporária, pilha demonstrativa e grafo de dependências hipotéticas entre
+módulos cadastrados. `SIMULAR` não muda pendências no banco; desfazer na pilha
+não reverte operações SQLite. A pilha dura enquanto o submenu 3 estiver aberto;
+o grafo é reconstruído em cada consulta. [Guia](DOC_NAVEGACAO.md).
 
 Execução: `python3 -B -m unittest discover -s tests -v`
 

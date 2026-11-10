@@ -19,7 +19,8 @@ Tabelas:
 - alertas
 - solicitacoes
 
-A conexão será gerenciada por banco_dados.py.
+A conexão é aberta por `banco_dados.py`; `codigo_fonte.main()` controla o ciclo de
+vida da aplicação e garante o fechamento. `main.py` encaminha para essa mesma função.
 
 Todas as conexões deverão utilizar a verificação de chaves estrangeiras.
 
@@ -264,9 +265,38 @@ de cadastro definido pela persistência. A análise não altera alertas já grav
 importa o CSV fornecido e fecha somente essa conexão; retorna o mesmo dicionário.
 Executar `analise_integrada.py` imprime esse resultado em JSON. Os auxiliares
 `simular_consumo_energetico()` e `modelo_linear_previsao()` preservam as chamadas
-sem argumentos usadas por `main.py`, imprimem uma demonstração sintética de
+sem argumentos de demonstração, imprimem uma série sintética de
 24 ciclos e retornam os dicionários dos modelos compartilhados. Não fazem parte
-do contrato de análise do banco; a ligação dos menus fica para a próxima etapa.
+do contrato de análise do banco e não são mais chamados pelos menus.
+
+### codigo_fonte.py e main.py — navegação integrada
+
+- `codigo_fonte.main()` -> `int`: abre uma conexão, inicializa o esquema, chama
+  `menu_principal(conexao)` e fecha em `finally`. Retorna 0 ao sair/EOF/Ctrl+C e 1
+  quando a inicialização falha; erros inesperados propagam após o fechamento.
+- `main.main` referencia essa mesma função. Executar qualquer entrada chama a
+  aplicação explicitamente; importar é silencioso e não abre banco/menu.
+- Opções 4, 5 e 7 recebem a conexão e usam `executar_analise_integrada`: mesma
+  cobertura validada, mesmos modelos, dados ausentes sem substituição sintética.
+  A opção 4 também simula geração −30%, a partir do histórico validado, sem escrita.
+- A opção 2 consulta leituras com filtro opcional de ciclo, R1/R2 e tabelas
+  verdade. R2 conta uma ocorrência por sensor observado, usando seus status atuais;
+  a análise integrada conta ocorrências por leitura. Consumo deve estar em kW,
+  finito e não negativo. Não exige cobertura energética completa para aplicar R1/R2.
+- Apenas `REGISTRAR` na opção 2 chama `registrar_alertas`; repetição idêntica não
+  duplica alertas. As demais análises não persistem seus alertas calculados.
+- O cadastro de solicitações no submenu 3 é administrativo, por entrada explícita
+  do usuário, usando `registrar_solicitacao`; não executa seu conteúdo. FIFO é por
+  ID, sem priorização. `SIMULAR` remove apenas da deque temporária, não do banco.
+- Pilha demonstrativa e grafo hipotético são locais ao submenu/consulta. Desfazer
+  na pilha não reverte SQL. Não há consulta/alteração de status de alertas históricos
+  pelo menu; o monitoramento apresenta alertas recalculados das leituras.
+- A opção 6 chama `demonstrar_agentes()` em toda visita e permite uma solicitação
+  textual opcional via `rotear_solicitacao`; sem cadastro/execução/consulta ao banco.
+- Telas analíticas apresentam resultados, interpretação, recomendações e
+  limitações sem modificar coeficientes/métricas/previsões ou autorizar operação.
+
+Roteiro, persistência e testes em [DOC_NAVEGACAO.md](DOC_NAVEGACAO.md).
 
 ## **Unidades**
 

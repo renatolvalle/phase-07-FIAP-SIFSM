@@ -1,5 +1,12 @@
 # Relatório Técnico - Sistema Integrado de Futuro Sustentável em Marte (SIFSM)
 
+> **Rascunho pendente de revisão completa na Etapa 4.** O texto abaixo ainda
+> contém divergências conhecidas com o protótipo (tabelas, automação/RAG, modelos
+> e memória). Não usar essas alegações como evidência de implementação. Para o
+> estado verificado após a Etapa 3, consultar [README](../README.md),
+> [contratos](CONTRATOS.md), [análise integrada](DOC_ANALISE_INTEGRADA.md) e
+> [navegação](DOC_NAVEGACAO.md). Nenhum equipamento é controlado automaticamente.
+
 ## Contexto da Solução
 O Sistema Integrado de Futuro Sustentável em Marte (SIFSM) foi desenvolvido para gerenciar os recursos, a infraestrutura e as decisões operacionais da colônia Aurora Siger. O sistema integra banco de dados relacional, regras lógicas de automação, estruturas de dados otimizadas, simulações computacionais, modelagem preditiva e inteligência artificial para garantir a sobrevivência, a segurança e a sustentabilidade da tripulação.
 

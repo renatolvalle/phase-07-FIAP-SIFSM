@@ -178,7 +178,7 @@ def executar_analise_integrada(conexao):
 
 
 def simular_consumo_energetico():
-    """Compatibilidade com main.py: demonstração sintética, sem consultar o banco."""
+    """Demonstração sintética auxiliar, sem consultar o banco ou os menus."""
     from demonstracao_energia import criar_serie_demonstracao
 
     resultado = simular_balanco_energetico(criar_serie_demonstracao())
@@ -191,7 +191,7 @@ def simular_consumo_energetico():
 
 
 def modelo_linear_previsao():
-    """Compatibilidade com main.py: reutiliza a regressão cronológica do projeto."""
+    """Demonstração sintética auxiliar com a regressão cronológica do projeto."""
     from demonstracao_energia import criar_serie_demonstracao
 
     resultado = avaliar_e_prever_consumo(criar_serie_demonstracao())
