@@ -66,9 +66,9 @@ A suíte automatizada usa `unittest`; veja [Como Executar os Testes](#como-execu
 | Monitoramento | Regras booleanas e avaliação documentadas em `monitoramento.py` |
 | Estruturas de dados | Índice hash, fila, pilha e grafo em `estruturas_dados.py` |
 | Simulação e regressão | Implementações em `simulacao_computacional.py` e `modelo_linear.py`; demonstração reproduzível em `demonstracao_energia.py` |
-| Agentes | `agents.py` disponibiliza `rotear_solicitacao()` e `gerar_recomendacoes()` conforme os contratos da equipe |
+| Agentes | `agents.py` oferece roteamento com guardrail antes do handoff, recomendações baseadas nos resultados e demonstração explícita, sem execução operacional ou persistência |
 | Análise integrada | `analise_integrada.py` disponibiliza `executar_analise_integrada()` para executar a simulação e a previsão |
-| Menu `main.py` | Executa a simulação/regressão e a demonstração de agentes; a opção de banco ainda não inicia o menu de CRUD |
+| Menu `main.py` | Executa a simulação/regressão; as opções de banco e agentes ainda não chamam os pontos de entrada explícitos |
 | Menu `codigo_fonte.py` | Inicializa o banco e abre o gerenciamento de dados; opções especializadas restantes ainda exibem “Funcionalidade em Desenvolvimento” |
 | Integração | Os menus e alguns módulos especializados ainda não estão completamente integrados entre si |
 
@@ -111,7 +111,8 @@ Os exemplos abaixo são executados a partir da raiz do repositório.
 ```
 
 No menu de `main.py`, escolha `2` para executar a simulação energética e a
-previsão linear, `3` para executar a demonstração de agentes, ou `4` para sair.
+previsão linear, ou `4` para sair. A opção `3` apenas importa os agentes e ainda
+precisa chamar a demonstração explícita, pois importar o módulo não a executa.
 A opção `1` importa `codigo_fonte.py`, mas não inicia o menu de banco de dados.
 
 ### **Executar o menu de banco de dados e CRUD**
@@ -127,6 +128,22 @@ seus módulos especializados.
 
 O arquivo `aurora_siger.db` é criado automaticamente quando necessário e está
 ignorado pelo Git.
+
+### **Demonstração dos agentes e guardrails**
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -B agents.py
+```
+
+A demonstração mostra encaminhamento para energia e manutenção, bloqueio de
+solicitação sobre suporte vital e encaminhamento humano para assunto fora do
+escopo. Pode ser repetida por `agents.demonstrar_agentes()`, sem depender do cache
+de importação. Não abre o banco, não cadastra ordens e não controla equipamentos.
+
+`gerar_recomendacoes(indicadores, alertas, simulacao, previsao)` retorna um
+dicionário de sugestões e limitações baseado nos resultados recebidos. A validação
+humana é obrigatória. Veja os formatos e os limites da triagem por palavras-chave
+em [Contratos de integração](docs/CONTRATOS.md#agentspy).
 
 ### **Demonstração da simulação e regressão**
 
@@ -266,6 +283,7 @@ phase-07-FIAP-SIFSM/
 │   ├── PLANO_EQUIPE.md
 │   └── relatorio_tecnico.md
 ├── tests/
+│   ├── test_agents.py
 │   ├── test_banco_dados.py
 │   ├── test_contratos.py
 │   ├── test_demonstracao_energia.py
@@ -285,7 +303,7 @@ phase-07-FIAP-SIFSM/
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `main.py` | Menu de entrada para a simulação/regressão e a demonstração de agentes |
+| `main.py` | Menu de entrada para a simulação/regressão, com integração de banco e agentes pendente |
 | `codigo_fonte.py` | Menu de gerenciamento de dados, CRUD e interface SQLite |
 | `agents.py` | Simulação de agentes e regras de guardrail |
 | `analise_integrada.py` | Simulação e previsão executadas pelo `main.py`; também expõe `executar_analise_integrada()` |
@@ -300,7 +318,7 @@ phase-07-FIAP-SIFSM/
 | `modelo_linear.py` | Modelagem e regressão linear |
 | `demonstracao_energia.py` | Demonstração reproduzível, comparação de cenários, gráficos e JSON |
 | `requirements.txt` | Dependências externas para os módulos analíticos e gráficos |
-| `tests/` | Nove arquivos de testes automatizados |
+| `tests/` | Dez arquivos de testes automatizados |
 | `docs/` | Contratos, documentação técnica, plano da equipe e relatório |
 | `graficos_ou_imagens/` | Gráficos e resultados JSON da demonstração |
 
@@ -408,8 +426,8 @@ dos resultados e no relatório técnico final.
   seu menu.
 - É necessário definir a agregação dos sensores e se a série representa um
   módulo ou toda a colônia antes de conectar `obter_serie_energia()` às análises.
-- `tests/test_contratos.py` ainda espera o módulo `agentes`; o arquivo atual é
-  `agents.py`, o que causa erro na descoberta completa dos testes.
+- O menu de agentes ainda precisa chamar `agents.demonstrar_agentes()`;
+  os testes já verificam as assinaturas, os retornos e os guardrails de `agents.py`.
 
 ### **Modelos e resultados**
 

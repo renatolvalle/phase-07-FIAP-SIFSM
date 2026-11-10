@@ -107,12 +107,61 @@ O retorno conterá as chaves `historico` e `resumo`.
 
 O retorno conterá `coeficientes`, `metricas`, `previsoes` e `limitacoes`.
 
-### agentes.py
+### agents.py
 
 - `rotear_solicitacao(texto)` -> str.
 - `gerar_recomendacoes(indicadores, alertas, simulacao, previsao)` -> dict.
 
-As recomendações não poderão executar ações operacionais automáticamente.
+`agents.py` é o nome efetivo do módulo (referido como `agentes.py` no plano
+original). As recomendações não executam ações operacionais automaticamente,
+não abrem conexão SQL, não registram ordens e não inserem solicitações em fila.
+Eventual cadastro cabe à camada de integração/persistência, após validação humana.
+
+**Roteamento e guardrails:**
+
+- `texto` deve ser uma string não vazia; entrada inválida gera `ValueError`.
+- O triador normaliza caixa, acentos, espaços e pontuação e compara palavras
+  inteiras. Energia/bateria/consumo têm precedência sobre falha/manutenção/reparo.
+- Antes de qualquer encaminhamento, menções a `suporte vital`, `módulo(s)
+  crítico(s)` ou `sistema(s) crítico(s)` são bloqueadas e encaminhadas à supervisão
+  humana/autorização manual. Os especialistas também aplicam esse bloqueio em
+  chamadas diretas. Não existe parâmetro para autorizar execução automática.
+- A política é conservadora: consultas e negações sobre esses sistemas também
+  exigem revisão humana. Palavras desconhecidas recebem orientação de intervenção
+  humana. Trata-se de simulação por palavras-chave, não de um classificador geral
+  de riscos ou de uma barreira suficiente para controlar equipamentos reais.
+- Importar o módulo não executa demonstração, menu, acesso ao banco ou impressão.
+  `demonstrar_agentes()` exibe e retorna `list[dict]` com `solicitacao` e `resposta`;
+  pode ser repetida ou executada com `python -X utf8 -B agents.py`.
+
+**Entradas de `gerar_recomendacoes`:**
+
+| Argumento | Tipo | Campos utilizados |
+|---|---|---|
+| `indicadores` | `dict` | `quantidade_leituras` (inteiro >= 0), `consumo_medio_kw` (>= 0) |
+| `alertas` | `list[dict]` | Quantidade de alertas recebidos para revisão de manutenção |
+| `simulacao` | `dict` | `resumo`: `quantidade_ciclos` (inteiro >= 0), `deficit_total_kwh`, `excedente_total_kwh` (>= 0), `soc_final_pct` (0 a 100) |
+| `previsao` | `dict` | `coeficientes.inclinacao_kw_por_ciclo` (pode ser negativa), `metricas.mae_kw` e `metricas.mae_referencia_kw` (ambos >= 0), `metricas.r2` (número ou `None`), `previsoes` (`list[dict]` com `consumo_previsto_kw`), `limitacoes` (`list[str]`) |
+
+Os quatro argumentos são obrigatórios. Campos conhecidos são opcionais, sem
+substituir ausência por zero; `{}`/`[]` representam resultados indisponíveis.
+Campos adicionais dos módulos analíticos são aceitos. Valores fornecidos devem
+respeitar os tipos e intervalos acima; números devem ser finitos e não booleanos.
+Estruturas/valores inválidos geram `ValueError`. Entradas não são alteradas.
+
+O retorno é `dict` com:
+
+- `energia`: `list[str]` baseada no consumo informado, déficit/excedente e estado
+  final simulados, tendência e pico previstos, quando disponíveis;
+- `manutencao`: `list[str]` para revisão dos alertas recebidos, sem confirmar cadastro;
+- `supervisao_humana`: sempre `True`;
+- `limitacoes`: `list[str]` com ausência de dados, restrições operacionais e ressalvas
+  da previsão recebida, incluindo valores negativos, R² indefinido e modelo que
+  não supera a referência pelo MAE, quando aplicável.
+
+Sem ciclos não se interpreta o estado inicial da bateria como resultado de
+operação. Previsões negativas são preservadas na entrada e sinalizadas como
+inválidas, sem recomendação de pico. Sugestões não atestam segurança operacional.
 
 ### analise_integrada.py
 - `executar_analise_integrada(conexao)` -> dict.
