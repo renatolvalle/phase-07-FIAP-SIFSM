@@ -66,13 +66,11 @@ A suíte automatizada usa `unittest`; veja [Como Executar os Testes](#como-execu
 | Monitoramento | Regras booleanas e avaliação documentadas em `monitoramento.py` |
 | Estruturas de dados | Índice hash, fila, pilha e grafo em `estruturas_dados.py` |
 | Simulação e regressão | Implementações em `simulacao_computacional.py` e `modelo_linear.py`; demonstração reproduzível em `demonstracao_energia.py` |
+| Agentes | `agents.py` disponibiliza `rotear_solicitacao()` e `gerar_recomendacoes()` conforme os contratos da equipe |
+| Análise integrada | `analise_integrada.py` disponibiliza `executar_analise_integrada()` para executar a simulação e a previsão |
 | Menu `main.py` | Executa a simulação/regressão e a demonstração de agentes; a opção de banco ainda não inicia o menu de CRUD |
 | Menu `codigo_fonte.py` | Inicializa o banco e abre o gerenciamento de dados; opções especializadas restantes ainda exibem “Funcionalidade em Desenvolvimento” |
 | Integração | Os menus e alguns módulos especializados ainda não estão completamente integrados entre si |
-
-O nome atual do módulo de agentes é `agents.py`. O teste
-`tests/test_contratos.py` ainda importa `agentes`, então a descoberta completa
-dos testes apresenta um erro de importação até que esse contrato seja alinhado.
 
 ## **Tecnologias**
 - Python: ambiente verificado com **3.12.10** no Windows.
@@ -209,12 +207,16 @@ Na raiz do repositório, execute o comando solicitado:
 py -m unittest discover -s tests
 ```
 
-Se estiver usando o ambiente virtual criado acima, também pode chamar o seu
-interpretador diretamente:
+Esse comando precisa usar um Python com as dependências de `requirements.txt`
+instaladas. Se elas foram instaladas no ambiente virtual do projeto, rode os
+testes com o interpretador desse ambiente:
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests
 ```
+
+Para instalar as dependências no Python selecionado pelo launcher `py`, use
+`py -m pip install -r requirements.txt` antes de executar o comando inicial.
 
 Para executar com detalhes de cada teste:
 
@@ -222,10 +224,6 @@ Para executar com detalhes de cada teste:
 py -m unittest discover -s tests -v
 ```
 
-O comando de descoberta atual encontra testes que ainda importam o módulo
-`agentes`, embora o arquivo disponível seja `agents.py`. Por esse motivo, a
-execução completa atualmente termina com erro de importação em
-`test_contratos.py`; os demais testes continuam sendo executados.
 Em Linux/macOS, o comando equivalente é `python3 -m unittest discover -s tests`.
 
 Os testes de persistência usam bancos SQLite em memória, e os testes de
@@ -290,7 +288,7 @@ phase-07-FIAP-SIFSM/
 | `main.py` | Menu de entrada para a simulação/regressão e a demonstração de agentes |
 | `codigo_fonte.py` | Menu de gerenciamento de dados, CRUD e interface SQLite |
 | `agents.py` | Simulação de agentes e regras de guardrail |
-| `analise_integrada.py` | Demonstração antiga de consumo energético e regressão usada pelo `main.py` |
+| `analise_integrada.py` | Simulação e previsão executadas pelo `main.py`; também expõe `executar_analise_integrada()` |
 | `config.py` | Configurações compartilhadas |
 | `banco_dados.py` | Persistência e operações SQLite |
 | `banco_aurora_siger.sql` | Esquema relacional do banco |
