@@ -93,6 +93,14 @@ class TestContratos(unittest.TestCase):
                 ]
             ),
             (
+                agents.rotear_solicitacao,
+                ["texto"]
+            ),
+            (
+                agents.gerar_recomendacoes,
+                ["indicadores", "alertas", "simulacao", "previsao"]
+            ),
+            (
                 analise_integrada.executar_analise_integrada,
                 ["conexao"]
             )
