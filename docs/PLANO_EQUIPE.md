@@ -63,7 +63,7 @@
 ### **Alexandre Niewelt**
 
 **Arquivos principais:**
-- agentes.py
+- agents.py (nome efetivo do módulo de agentes)
 - analise_integrada.py
 
 **Responsabilidades:**
@@ -102,6 +102,34 @@ A integração final dependerá das funções especializadas estarem implementad
 5. Revisar as alterações.
 6. Abrir Pull Request para integração.
 7. Integrar somente após a revisão.
+
+### **Finalização por etapas — atualização de 10/11/2026**
+
+Após a integração das contribuições iniciais, os ajustes finais seguem branches
+sequenciais por conjunto de mudanças, preservando as responsabilidades acima:
+
+1. `fix/agentes-contratos`: contratos, recomendações e guardrails; integrada à
+   `main` pelo PR #7.
+2. `feat/analise-integrada`: orquestração do banco, regras, hash/fila, simulação,
+   regressão e recomendações. Implementada nesta branch para teste e revisão,
+   com análise somente de leitura e demonstração CSV em memória. Os detalhes de
+   campos/políticas estão em `CONTRATOS.md` e `DOC_ANALISE_INTEGRADA.md`.
+3. `fix/integracao-menus`: conectar as opções e unificar a navegação, após integrar
+   a análise. Os adaptadores da opção 2 atual permanecem como demonstração sintética.
+4. `docs/finalizacao-entrega`: revisão completa do relatório, README final,
+   evidências aplicáveis, vídeo e validação do ZIP.
+
+A Etapa 2 conecta os módulos existentes sem mudar suas assinaturas compartilhadas,
+o esquema do banco ou os algoritmos de ajuste e simulação. Na revisão autorizada
+dessa etapa, o retorno de `metricas` da regressão recebeu dois campos aditivos:
+média do treino e contagem de previsões negativas no teste. Os agentes deixam
+de recomendar pico/tendência de uma reta que não supera a referência ou produz
+negativas, usando a média do treino como referência explícita quando disponível;
+avaliação incompleta implica abstenção. Os resultados brutos da regressão são
+preservados. Esse complemento está comunicado em `CONTRATOS.md` para revisão no PR.
+Persistir alertas continua sendo uma operação explícita da aplicação. O plano de branches finais
+complementa as branches individuais da implementação inicial; cada etapa segue
+teste, revisão e PR antes de integrar a `main` e iniciar a seguinte.
 
 ## **Regras de Colaboração**
 - Não modificar arquivos de outro integrante sem combinar previamente.

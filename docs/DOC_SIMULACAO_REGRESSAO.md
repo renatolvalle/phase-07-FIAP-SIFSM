@@ -7,8 +7,9 @@ e modelagem linear. As funções recebem listas de dicionários e podem ser util
 independentemente do banco e do menu.
 
 As assinaturas e chaves principais seguem [CONTRATOS.md](CONTRATOS.md).
-Os campos internos descritos aqui são a proposta implementada para alinhamento com
-Alexandre antes da integração com `agentes.py` e `analise_integrada.py`.
+Os campos internos são usados por `agents.py` e `analise_integrada.py`, conforme
+o complemento de contrato da Etapa 2. A regressão fornece resultados para inspeção;
+a política de uso nas recomendações não modifica os coeficientes nem suas métricas.
 
 ## 1. Arquivos e execução
 
@@ -285,14 +286,15 @@ MAE_referência = média(|real_teste - referência|)
   garantido fora do intervalo observado.
 - **Inclinação `b`:** variação estimada em kW por ciclo; associação, não causalidade.
 - **Previsões negativas:** preservadas, com aviso em `limitacoes`, inclusive se
-  ocorrerem no período de teste. Não são consumos fisicamente válidos.
+  ocorrerem no período de teste. Não são consumos fisicamente válidos. A quantidade
+  de negativas no teste é exposta para que os agentes não endossem essa reta.
 
 ### Retorno
 
 | Chave principal | Conteúdo |
 |---|---|
 | `coeficientes` | `intercepto_kw`, `inclinacao_kw_por_ciclo` |
-| `metricas` | `quantidade_total`, `quantidade_treino`, `quantidade_teste`, `consumo_minimo_kw`, `consumo_maximo_kw`, `consumo_medio_kw`, `mae_kw`, `rmse_kw`, `r2`, `mae_referencia_kw` |
+| `metricas` | `quantidade_total`, `quantidade_treino`, `quantidade_teste`, `consumo_minimo_kw`, `consumo_maximo_kw`, `consumo_medio_kw`, `consumo_medio_treino_kw`, `mae_kw`, `rmse_kw`, `r2`, `mae_referencia_kw`, `quantidade_previsoes_negativas_teste` |
 | `previsoes` | Lista de `{ciclo, consumo_previsto_kw, extrapolacao: True}` |
 | `limitacoes` | Lista de textos com ressalvas de interpretação |
 
@@ -302,6 +304,22 @@ ocupação e manutenção. Menos de 30 observações dispara uma observação di
 de amostra pequena; esse limiar não é uma garantia estatística para bases maiores.
 A função não consegue inferir a procedência da série. A demonstração identifica
 expressamente seus dados sintéticos.
+
+### Uso dos resultados nas recomendações
+
+`consumo_medio_treino_kw` é a referência calculada só no treino, não a média global
+`consumo_medio_kw`. Os agentes recomendam o pico/tendência da reta apenas se o MAE
+for estritamente menor que o da referência e não houver negativas no teste/futuro.
+Quando a reta empata/perde ou é fisicamente inválida, a sugestão usa a média do
+treino como estimativa constante de referência, sem chamá-la de pico. Avaliação
+incompleta, previsões ausentes ou referência necessária mas não informada levam
+à abstenção, sem reconstruir a média usando dados de teste.
+
+Isso não substitui `previsoes`, coeficientes ou métricas da regressão: preserva a
+avaliação acadêmica mesmo em bases sem tendência útil. A seleção usa o mesmo teste
+temporal e não tem avaliação independente; menor erro nesse recorte não é garantia
+futura. Consulte [Análise integrada](DOC_ANALISE_INTEGRADA.md) para o resultado
+do CSV do projeto, em que a referência supera a regressão.
 
 ## 5. Demonstração reproduzível e resultados
 
@@ -383,6 +401,10 @@ de teste não permitem concluir estabilidade, independência ou normalidade dos 
 - [Resíduos do teste](../graficos_ou_imagens/residuos_teste.png): diferenças entre consumo real e previsto.
 - [Dados e resultados completos](../graficos_ou_imagens/demonstracao_energia.json): séries de entrada, históricos, resumos e regressão.
 
+As evidências versionadas registram a demonstração de 07/11/2026. Novas execuções
+incluem também os dois campos de avaliação adicionados na Etapa 2; os resultados
+numéricos originais da reta e da simulação não foram alterados por esse complemento.
+
 No gráfico da bateria, zero marca o estado inicial, não um registro de entrada.
 As linhas ligam estados conhecidos ao final dos ciclos para facilitar leitura;
 não são medições intermediárias nem refinamento da simulação.
@@ -395,9 +417,13 @@ não são medições intermediárias nem refinamento da simulação.
 .\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -v
 ```
 
-Resultado local: **102 testes aprovados**, sendo 58 existentes, 22 da simulação,
+Validação inicial de 07/11/2026: **102 testes aprovados**, sendo 58 existentes, 22 da simulação,
 19 da regressão e 3 da demonstração. Os testes novos foram criados antes das
 implementações numéricas e inicialmente confirmaram os respectivos stubs.
+
+Na revisão da Etapa 2, a suíte completa passou a **272 testes aprovados**, incluindo
+a escolha da referência, abstenção, métricas preservadas, negativas no teste/futuro
+e comprovação de que a média do treino não utiliza as observações de teste.
 
 Cobertura funcional:
 

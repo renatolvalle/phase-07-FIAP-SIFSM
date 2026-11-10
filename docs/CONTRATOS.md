@@ -107,6 +107,19 @@ O retorno conterá as chaves `historico` e `resumo`.
 
 O retorno conterá `coeficientes`, `metricas`, `previsoes` e `limitacoes`.
 
+Complemento aditivo de 10/11/2026 para avaliação das recomendações, autorizado
+na revisão da Etapa 2 (sem alterar assinatura ou chaves principais):
+
+- `metricas.consumo_medio_treino_kw`: média de consumo calculada exclusivamente
+  nos registros de treino, em kW; é o valor constante da referência usada no teste.
+  Não se confunde com `metricas.consumo_medio_kw`, que descreve toda a série.
+- `metricas.quantidade_previsoes_negativas_teste`: inteiro >= 0, quantidade de
+  estimativas fisicamente inválidas da reta no período de teste.
+
+Coeficientes, MAE, RMSE, R² e `previsoes` continuam sendo **da regressão original**,
+mesmo quando ela não é escolhida nas recomendações. A escolha não altera o modelo,
+não reajusta no teste e não substitui suas previsões pela média silenciosamente.
+
 ### agents.py
 
 - `rotear_solicitacao(texto)` -> str.
@@ -141,7 +154,7 @@ Eventual cadastro cabe à camada de integração/persistência, após validaçã
 | `indicadores` | `dict` | `quantidade_leituras` (inteiro >= 0), `consumo_medio_kw` (>= 0) |
 | `alertas` | `list[dict]` | Quantidade de alertas recebidos para revisão de manutenção |
 | `simulacao` | `dict` | `resumo`: `quantidade_ciclos` (inteiro >= 0), `deficit_total_kwh`, `excedente_total_kwh` (>= 0), `soc_final_pct` (0 a 100) |
-| `previsao` | `dict` | `coeficientes.inclinacao_kw_por_ciclo` (pode ser negativa), `metricas.mae_kw` e `metricas.mae_referencia_kw` (ambos >= 0), `metricas.r2` (número ou `None`), `previsoes` (`list[dict]` com `consumo_previsto_kw`), `limitacoes` (`list[str]`) |
+| `previsao` | `dict` | `coeficientes.inclinacao_kw_por_ciclo` (pode ser negativa), `metricas.mae_kw`, `metricas.mae_referencia_kw` e `metricas.consumo_medio_treino_kw` (>= 0), `metricas.quantidade_previsoes_negativas_teste` (inteiro >= 0), `metricas.r2` (número ou `None`), `previsoes` (`list[dict]` com `consumo_previsto_kw`), `limitacoes` (`list[str]`) |
 
 Os quatro argumentos são obrigatórios. Campos conhecidos são opcionais, sem
 substituir ausência por zero; `{}`/`[]` representam resultados indisponíveis.
@@ -152,7 +165,8 @@ Estruturas/valores inválidos geram `ValueError`. Entradas não são alteradas.
 O retorno é `dict` com:
 
 - `energia`: `list[str]` baseada no consumo informado, déficit/excedente e estado
-  final simulados, tendência e pico previstos, quando disponíveis;
+  final simulados; tendência e pico da regressão apenas quando a avaliação permitir,
+  ou estimativa constante explicitamente identificada como média do treino;
 - `manutencao`: `list[str]` para revisão dos alertas recebidos, sem confirmar cadastro;
 - `supervisao_humana`: sempre `True`;
 - `limitacoes`: `list[str]` com ausência de dados, restrições operacionais e ressalvas
@@ -161,12 +175,98 @@ O retorno é `dict` com:
 
 Sem ciclos não se interpreta o estado inicial da bateria como resultado de
 operação. Previsões negativas são preservadas na entrada e sinalizadas como
-inválidas, sem recomendação de pico. Sugestões não atestam segurança operacional.
+inválidas. Sugestões não atestam segurança operacional.
+
+**Escolha da estimativa nas recomendações:**
+
+1. Sem previsões, não há sugestão preditiva. Sem ambos os MAEs ou sem a contagem
+   de negativas no teste, a avaliação é incompleta: não recomendar pico, tendência
+   nem referência. Dados de contratos anteriores são aceitos, mas geram essa abstenção.
+2. Com avaliação completa, usar pico/tendência da regressão somente se
+   `mae_kw < mae_referencia_kw`, nenhuma previsão futura for negativa e a contagem
+   de negativas no teste for zero. R² não é um critério adicional de seleção;
+   `None` continua sinalizado e não é convertido em 0 ou 1.
+3. Em empate ou pior MAE, indicar **modelo sem ganho preditivo demonstrado** e
+   suprimir recomendações de pico/tendência da reta. Negativas no teste ou no
+   futuro também bloqueiam essas recomendações, mesmo com MAE menor.
+4. Nesses casos, se a média do treino estiver disponível, recomendar apenas esse
+   valor constante para cada ciclo do horizonte como **estimativa de referência**,
+   não como pico, demanda garantida ou capacidade de segurança. Sem a média do
+   treino, abster-se; nunca usar a média global para reconstruir a referência.
+
+A comparação usa a janela de teste já existente: é uma escolha exploratória,
+não uma avaliação independente do método selecionado nem garantia de desempenho
+futuro. Recomendações sobre déficit/excedente observado na simulação continuam
+disponíveis independentemente da qualidade preditiva. O consumo médio global
+continua descrito como indicador histórico, explicitamente não como previsão.
 
 ### analise_integrada.py
 - `executar_analise_integrada(conexao)` -> dict.
 
 O retorno conterá `indicadores`, `alertas`, `simulacao`, `previsao`, `recomendacoes` e `limitacoes`.
+
+**Entrada e efeitos:** `conexao` é obrigatória, aberta por `abrir_conexao`, com
+`sqlite3.Row`, chaves estrangeiras habilitadas e esquema previamente inicializado.
+A função usa apenas consultas de `banco_dados.py`. Não abre/fecha a conexão,
+não inicializa tabelas, não importa dados, não faz commit/rollback, não grava
+alertas e não cadastra/atende solicitações. Repetir a análise não duplica registros.
+O chamador é responsável pelo ciclo de vida e por eventual transação de leitura
+consistente caso existam alterações concorrentes.
+
+**Orquestração:** `consultar_leituras` → índice hash de `listar_sensores` e validação
+da cobertura → `obter_serie_energia` → R1/R2 → fila de solicitações pendentes →
+`simular_balanco_energetico` → `avaliar_e_prever_consumo` → `gerar_recomendacoes`.
+Os modelos usam os padrões de `config.py`, sem cálculos analíticos paralelos.
+
+**Campos do retorno:**
+
+| Campo | Conteúdo |
+|---|---|
+| `indicadores` | `quantidade_leituras`, `quantidade_modulos`, `quantidade_sensores`, `quantidade_ciclos` (energéticos), `quantidade_alertas`, `quantidade_solicitacoes_pendentes`; contagens inteiras |
+| `indicadores.consumo_medio_kw`, `indicadores.geracao_media_kw` | Médias dos totais por ciclo da série, não médias de sensores individuais; campos ausentes se não houver energia |
+| `indicadores.indice_sensores` | `dict` indexado pelo código, valores de `listar_sensores`; usado na busca/validação das leituras |
+| `indicadores.fila_solicitacoes` | `list[dict]` de pendentes, ordenada por ID usando a deque FIFO, sem priorização ou atendimento automático |
+| `indicadores.bloqueios_operacionais` | `list[dict]` com `sensor_codigo`, `ciclo` e `motivos` dos bloqueios R2 pelos status atuais; não são novos alertas persistidos |
+| `alertas` | Lista produzida por R1 para as leituras consultadas, não a listagem histórica da tabela `alertas` |
+| `simulacao` | Retorno integral do modelo de bateria ou `{}` quando não houver série energética |
+| `previsao` | Retorno integral da regressão ou `{}` quando houver menos de 10 ciclos |
+| `recomendacoes` | Retorno de `gerar_recomendacoes`, com supervisão humana obrigatória |
+| `limitacoes` | `list[str]` sem duplicatas: políticas da integração, indisponibilidades e ressalvas dos agentes/modelo |
+
+**Semântica dos dados:** a série soma por ciclo as leituras de `consumo_kw` e
+`geracao_kw` de todos os módulos, incluindo histórico de dispositivos hoje
+inativos/em manutenção. R1 considera apenas sensores/módulos atualmente ativos;
+R2 sinaliza sensor inválido ou módulo em manutenção. O banco não registra status
+históricos; bloqueios atuais não apagam medições anteriores nem autorizam operações.
+
+Antes de somar, a análise exige potências finitas não negativas em `kW`, consumo
+e geração presentes e cobertura igual dos sensores energéticos observados em
+todos os ciclos energéticos. Falta de sensor em um desses ciclos é erro; zero
+explicitamente medido é válido. Sensores cadastrados sem nenhuma leitura geram
+uma limitação de cobertura, sem imputação. Lacunas completas de ciclos são aceitas
+com aviso, sem interpolação nem tempo adicional. A soma representa os sensores
+observados, não prova cobertura física de toda a colônia.
+
+**Ausências e erros:** banco vazio ou apenas leituras não energéticas preserva
+contagens/estruturas/regras, com `simulacao={}` e `previsao={}` e médias ausentes.
+De 1 a 9 ciclos válidos, há simulação e previsão indisponível com justificativa.
+Tipo de conexão incorreto gera `TypeError`; fábrica de linhas incompatível,
+unidades, cobertura ou medidas inválidas geram `ValueError`. Erros SQLite e erros
+numéricos dos modelos propagam; não são convertidos em resultados de sucesso.
+
+**Persistência explícita:** caso a aplicação decida guardar alertas, chama
+`registrar_alertas(conexao, resultado["alertas"])` separadamente. Essa função já
+previne duplicação por `(sensor_id, ciclo, regra_codigo)` e rejeita conflitos.
+`criado_em` no alerta calculado é o instante da leitura; na tabela é o instante
+de cadastro definido pela persistência. A análise não altera alertas já gravados.
+
+`demonstrar_analise_integrada()` é uma demonstração auxiliar: cria banco em memória,
+importa o CSV fornecido e fecha somente essa conexão; retorna o mesmo dicionário.
+Executar `analise_integrada.py` imprime esse resultado em JSON. Os auxiliares
+`simular_consumo_energetico()` e `modelo_linear_previsao()` preservam as chamadas
+sem argumentos usadas por `main.py`, imprimem uma demonstração sintética de
+24 ciclos e retornam os dicionários dos modelos compartilhados. Não fazem parte
+do contrato de análise do banco; a ligação dos menus fica para a próxima etapa.
 
 ## **Unidades**
 

@@ -26,7 +26,8 @@ class TestModeloLinear(unittest.TestCase):
         self.assertEqual(set(resultado["metricas"]), {
             "quantidade_total", "quantidade_treino", "quantidade_teste",
             "consumo_minimo_kw", "consumo_maximo_kw", "consumo_medio_kw",
-            "mae_kw", "rmse_kw", "r2", "mae_referencia_kw",
+            "mae_kw", "rmse_kw", "r2", "mae_referencia_kw", "consumo_medio_treino_kw",
+            "quantidade_previsoes_negativas_teste",
         })
         self.assertEqual(len(resultado["previsoes"]), HORIZONTE_PREVISAO_CICLOS)
         self.assertTrue(all(isinstance(texto, str) for texto in resultado["limitacoes"]))
@@ -58,6 +59,8 @@ class TestModeloLinear(unittest.TestCase):
         self.assertAlmostEqual(metricas["rmse_kw"], sqrt(5))
         self.assertAlmostEqual(metricas["r2"], -4)
         self.assertAlmostEqual(metricas["mae_referencia_kw"], 11)
+        self.assertAlmostEqual(metricas["consumo_medio_treino_kw"], 10)
+        self.assertEqual(metricas["quantidade_previsoes_negativas_teste"], 0)
         self.assertEqual(metricas["consumo_minimo_kw"], 3)
         self.assertEqual(metricas["consumo_maximo_kw"], 22)
         self.assertAlmostEqual(metricas["consumo_medio_kw"], 12.2)
@@ -73,6 +76,10 @@ class TestModeloLinear(unittest.TestCase):
         self.assertEqual(alterado["metricas"]["quantidade_teste"], 5)
         self.assertEqual(original["coeficientes"], alterado["coeficientes"])
         self.assertEqual(original["previsoes"], alterado["previsoes"])
+        self.assertEqual(original["metricas"]["consumo_medio_treino_kw"],
+                         alterado["metricas"]["consumo_medio_treino_kw"])
+        self.assertNotEqual(alterado["metricas"]["consumo_medio_treino_kw"],
+                            alterado["metricas"]["consumo_medio_kw"])
         self.assertAlmostEqual(alterado["metricas"]["mae_kw"], 100)
         self.assertAlmostEqual(alterado["metricas"]["mae_referencia_kw"], 124)
 
@@ -108,6 +115,20 @@ class TestModeloLinear(unittest.TestCase):
         resultado = avaliar_e_prever_consumo(serie, 2)
         self.assertEqual([r["consumo_previsto_kw"] for r in resultado["previsoes"]], [-1, -2])
         self.assertIn("negativ", " ".join(resultado["limitacoes"]).lower())
+
+    def test_conta_negativas_no_teste_sem_mascarar_erro_ou_reajustar(self):
+        serie = [
+            {"ciclo": ciclo, "consumo_kw": max(0, 8 - ciclo), "geracao_kw": 0}
+            for ciclo in range(1, 11)
+        ]
+        resultado = avaliar_e_prever_consumo(serie)
+        self.assertEqual(resultado["metricas"]["quantidade_previsoes_negativas_teste"], 2)
+        self.assertEqual(resultado["metricas"]["consumo_medio_treino_kw"], 3.5)
+        self.assertEqual(resultado["coeficientes"], {
+            "intercepto_kw": 8.0, "inclinacao_kw_por_ciclo": -1.0,
+        })
+        self.assertEqual(resultado["metricas"]["mae_kw"], 1.5)
+        self.assertEqual(resultado["previsoes"][0]["consumo_previsto_kw"], -3)
 
     def test_limitacoes_de_interpretacao(self):
         textos = " ".join(avaliar_e_prever_consumo(criar_serie())["limitacoes"]).lower()

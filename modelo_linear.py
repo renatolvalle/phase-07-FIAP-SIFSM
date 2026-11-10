@@ -58,6 +58,8 @@ def avaliar_e_prever_consumo(serie_energia, horizonte_ciclos=HORIZONTE_PREVISAO_
     posteriores. Mantém o ajuste do treino para prever após o último ciclo.
     Retorna coeficientes, metricas, previsoes e limitacoes; dados inválidos
     geram ValueError. A geração é validada como parte da série, mas não é preditora.
+    Expõe a média do treino e a contagem de negativas no teste para os agentes
+    decidirem se usam a reta ou a referência, sem substituir as previsões brutas.
     """
     horizonte_ciclos = _validar_inteiro_positivo(horizonte_ciclos, "horizonte_ciclos")
     serie = _preparar_serie(serie_energia)
@@ -95,10 +97,13 @@ def avaliar_e_prever_consumo(serie_energia, horizonte_ciclos=HORIZONTE_PREVISAO_
         "quantidade_treino": len(treino),
         "quantidade_teste": len(teste),
         **exploracao,
+        # A referência é ajustada só no treino; não substituir pela média global.
+        "consumo_medio_treino_kw": media_treino,
         "mae_kw": _media([abs(r) for r in residuos]),
         "rmse_kw": sqrt(soma_erros_quadrados / len(teste)),
         "r2": r2,
         "mae_referencia_kw": _media([abs(real - media_treino) for real in reais]),
+        "quantidade_previsoes_negativas_teste": sum(valor < 0 for valor in estimados),
     }
     ultimo_ciclo = serie[-1]["ciclo"]
     previsoes = [
