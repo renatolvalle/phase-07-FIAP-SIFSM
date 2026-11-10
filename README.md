@@ -24,7 +24,9 @@
 
 O Sistema Integrado de Futuro Sustentável em Marte (SIFSM) é um protótipo acadêmico desenvolvido para organizar informações operacionais da colônia Aurora Siger e auxiliar na utilização sustentável de seus recursos.
 
-A solução integrará banco de dados, estruturas de dados, regras booleanas, simulação computacional, modelagem linear e agentes simulados para apoiar decisões operacionais.
+O protótipo reúne implementações de banco de dados, estruturas de dados, regras
+booleanas, simulação computacional, modelagem linear e agentes simulados. A
+integração entre todos esses módulos ainda está em andamento.
 
 Não será necessário utilizar sensores físicos, APIs externas ou modelos avançados de inteligência artificial.
 
@@ -56,58 +58,26 @@ Funcionalidades implementadas:
 
 ### **Testes**
 
-A implementação feita por Renato Nascimento possui uma suíte com
-100 testes automatizados previstos e revisados.
-
-A execução pode ser realizada com:
-
-`python3 -B -m unittest discover -s tests -v`
-
-### **Integração com a equipe**
-
-O projeto também prevê:
-
-- Monitoramento e regras booleanas.
-- Estruturas de dados operacionais.
-- Simulação computacional energética.
-- Regressão linear.
-- Agentes especializados simulados.
-- Análise integrada de sustentabilidade.
-
-Essas funcionalidades pertencem às demais frentes de desenvolvimento e devem ser validadas durante a integração das branches.
-
-A conclusão da base de dados não significa que todas as
-funcionalidades especializadas já estejam integradas ao sistema.
-
-Este README descreve os arquivos desta revisão. A implementação da simulação e
-da regressão foi desenvolvida na `dev-danilo`; sua presença nesta branch não
-significa que já tenha sido incorporada à `main`.
+A suíte automatizada usa `unittest`; veja [Como Executar os Testes](#como-executar-os-testes).
 
 | Componente | Situação atual |
 |---|---|
-| Menu textual | Navegação, validação de opções e saída disponíveis; opções funcionais ainda exibem "Funcionalidade em Desenvolvimento" |
-| Banco SQLite | Conexão, cinco tabelas e regras de integridade disponíveis |
-| Monitoramento | Regras R1 (consumo elevado AND módulo crítico) e R2 (sensor inválido OR módulo em manutenção), com tabelas verdade e testes |
-| Estruturas de dados | Índice hash, fila, pilha e grafo implementados e testados |
-| Simulação energética | Bateria ideal, integração numérica, histórico, SoC, déficit e excedente implementados e testados |
-| Regressão linear | Mínimos quadrados, avaliação cronológica, métricas, referência e previsões implementados e testados |
-| Demonstração energética | Script independente com 24 ciclos sintéticos, comparação de cenários, quatro gráficos e resultados JSON |
-| CRUD e importação | Implementação pendente |
-| Agentes e análise integrada | Implementação pendente |
-| Integração dos módulos ao menu e banco | Pendente |
+| Banco de dados e CRUD | Persistência SQLite, gerenciamento de módulos, sensores, leituras e importação CSV disponíveis em `codigo_fonte.py` |
+| Monitoramento | Regras booleanas e avaliação documentadas em `monitoramento.py` |
+| Estruturas de dados | Índice hash, fila, pilha e grafo em `estruturas_dados.py` |
+| Simulação e regressão | Implementações em `simulacao_computacional.py` e `modelo_linear.py`; demonstração reproduzível em `demonstracao_energia.py` |
+| Menu `main.py` | Executa a simulação/regressão e a demonstração de agentes; a opção de banco ainda não inicia o menu de CRUD |
+| Menu `codigo_fonte.py` | Inicializa o banco e abre o gerenciamento de dados; opções especializadas restantes ainda exibem “Funcionalidade em Desenvolvimento” |
+| Integração | Os menus e alguns módulos especializados ainda não estão completamente integrados entre si |
 
-A última validação local desta revisão teve **102 testes aprovados**, sem testes
-pulados. Isso valida as funcionalidades cobertas, mas não representa um fluxo
-completo do sistema já integrado.
+O nome atual do módulo de agentes é `agents.py`. O teste
+`tests/test_contratos.py` ainda importa `agentes`, então a descoberta completa
+dos testes apresenta um erro de importação até que esse contrato seja alinhado.
 
 ## **Tecnologias**
 - Python: ambiente verificado com **3.12.10** no Windows.
 - SQLite, por meio de `sqlite3`, e demais bibliotecas padrão do Python.
-- **Matplotlib 3.11.2** para gerar os gráficos, conforme `requirements.txt`.
-
-Os cálculos da simulação e da regressão utilizam somente a biblioteca padrão.
-O NumPy é uma dependência transitiva do Matplotlib; Pandas e scikit-learn não são
-necessários para a implementação atual.
+- NumPy, Pandas e **Matplotlib 3.11.2**, declarados em `requirements.txt`.
 
 ### **Instalação em ambiente virtual**
 
@@ -134,14 +104,31 @@ ou mudanças na política de execução do PowerShell.
 
 ## **Como Executar**
 
-### **Menu principal**
+Os exemplos abaixo são executados a partir da raiz do repositório.
+
+### **Executar o menu principal**
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -B main.py
+```
+
+No menu de `main.py`, escolha `2` para executar a simulação energética e a
+previsão linear, `3` para executar a demonstração de agentes, ou `4` para sair.
+A opção `1` importa `codigo_fonte.py`, mas não inicia o menu de banco de dados.
+
+### **Executar o menu de banco de dados e CRUD**
 
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 -B codigo_fonte.py
 ```
 
-O sistema inicializa o banco SQLite e apresenta o menu. As opções de 1 a 8 ainda
-não chamam os módulos especializados. Use `0` para sair.
+Esse menu inicializa o banco SQLite e oferece gerenciamento de módulos,
+sensores, leituras e importação dos dados iniciais. As outras opções do menu
+principal estão disponíveis como pontos de integração, mas ainda não executam
+seus módulos especializados.
+
+O arquivo `aurora_siger.db` é criado automaticamente quando necessário e está
+ignorado pelo Git.
 
 ### **Demonstração da simulação e regressão**
 
@@ -175,9 +162,18 @@ Nos comandos de execução e testes, em Linux/macOS, substitua
 As fórmulas, os contratos de retorno e os resultados estão detalhados em
 [Simulação e regressão](docs/DOC_SIMULACAO_REGRESSAO.md).
 
+### **Gerar os dados iniciais**
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -B gerar_dados_iniciais.py
+```
+
+O comando gera `dados_aurora_siger.csv`, com dados simulados para módulos,
+sensores e leituras. Executá-lo novamente sobrescreve esse CSV.
+
 ## **Menu de Gerenciamento de Dados**
 
-A opção 1 do Menu Principal abre o submenu de gerenciamento.
+O menu de gerenciamento é aberto ao executar `codigo_fonte.py` diretamente.
 
 | Opção | Funcionalidade |
 |---|---|
@@ -207,118 +203,36 @@ módulos especializados do SIFSM.
 
 ## **Como Executar os Testes**
 
-O projeto utiliza o módulo `unittest` da biblioteca padrão Python.
-
-Para executar a suíte completa:
-
-O projeto utiliza o módulo `unittest` da biblioteca padrão Python.
-
-Para executar a suíte completa:
-
-**Suíte completa:**
+Na raiz do repositório, execute o comando solicitado:
 
 ```powershell
-.\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -v
+py -m unittest discover -s tests
 ```
 
-Na conclusão da implementação da Pessoa 1, a suíte possui
-100 testes automatizados previstos.
+Se estiver usando o ambiente virtual criado acima, também pode chamar o seu
+interpretador diretamente:
 
-Os testes verificam, entre outros aspectos:
-
-- Validação de dados.
-- Operações CRUD.
-- Restrições de chaves estrangeiras.
-- Cadastro de sensores e leituras.
-- Consultas SQL e agregações energéticas.
-- Geração reproduzível do CSV.
-- Importações idempotentes.
-- Rollback em operações inválidas.
-- Cadastro e consulta de solicitações.
-- Deduplicação de alertas.
-- Navegação e interações do Menu Principal.
-
-Os testes de persistência utilizam bancos SQLite em memória,
-evitando alterações no banco operacional local.
-
-Testes de geração e importação utilizam arquivos temporários.
-
-A quantidade total poderá aumentar com a integração
-das implementações dos outros integrantes.
-
-
-### **Requisitos**
-
-- Python 3.
-- Terminal ou ambiente de desenvolvimento compatível.
-- SQLite, utilizado por meio da biblioteca padrão `sqlite3`.
-
-A base do SIFSM utiliza bibliotecas padrão do Python.
-Os módulos especializados poderão utilizar outras bibliotecas
-conforme os requisitos e decisões técnicas da equipe.
-
-### **Acessar a pasta do projeto**
-
-```bash
-cd phase-07-FIAP-SIFSM
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests
 ```
 
-### **Gerar os dados simulados**
+Para executar com detalhes de cada teste:
 
-```bash
-python3 -B gerar_dados_iniciais.py
+```powershell
+py -m unittest discover -s tests -v
 ```
 
-O comando gera o arquivo `dados_aurora_siger.csv`.
+O comando de descoberta atual encontra testes que ainda importam o módulo
+`agentes`, embora o arquivo disponível seja `agents.py`. Por esse motivo, a
+execução completa atualmente termina com erro de importação em
+`test_contratos.py`; os demais testes continuam sendo executados.
+Em Linux/macOS, o comando equivalente é `python3 -m unittest discover -s tests`.
 
-O conjunto inicial contém:
+Os testes de persistência usam bancos SQLite em memória, e os testes de
+arquivos usam diretórios temporários. Os testes da demonstração gráfica
+precisam das dependências instaladas por `requirements.txt`.
 
-- 5 módulos operacionais.
-- 10 sensores.
-- 32 ciclos simulados.
-- 320 leituras.
-
-Cada ciclo representa uma hora na escala da simulação.
-
-**Atenção:** executar novamente o gerador sobrescreve o CSV no
-caminho configurado. Preserve alterações manuais, se existirem.
-
-### **Executar o sistema**
-
-```bash
-python3 codigo_fonte.py
-```
-
-O SIFSM inicializa o esquema SQLite e apresenta o Menu Principal.
-
-O arquivo `aurora_siger.db` é criado automaticamente quando necessário.
-
-### **Importar os dados iniciais**
-
-No Menu Principal:
-
-1. Selecione `1 - Gerenciar dados da colônia`.
-2. Selecione `9 - Importar dados iniciais`.
-3. Digite `IMPORTAR` para confirmar.
-
-A importação verifica módulos, sensores e leituras já existentes.
-
-Repetir a importação do mesmo CSV não duplica as leituras.
-Registros conflitantes provocam erro e a tentativa de
-importação é revertida.
-
-### **Consultar os dados**
-
-No submenu de gerenciamento, utilize:
-
-- Opção 1: listar módulos.
-- Opção 6: listar sensores.
-- Opção 7: consultar leituras.
-- Opção 8: consultar série energética.
-
-As opções 2 a 5 permitem cadastrar, buscar, atualizar e
-excluir módulos.
-**Testes específicos da parte energética:**
+Para executar apenas os testes de simulação, regressão ou demonstração:
 
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p "test_simulacao_computacional.py" -v
@@ -326,74 +240,71 @@ excluir módulos.
 .\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p "test_demonstracao_energia.py" -v
 ```
 
-| Grupo | Quantidade |
-|---|---:|
-| Banco, contratos, monitoramento e estruturas | 58 |
-| Simulação energética | 22 |
-| Regressão linear | 19 |
-| Demonstração e gráficos | 3 |
-| **Total** | **102** |
-
-Os testes usam banco em memória e dados de teste; não dependem de registros no
-banco local. Sem Matplotlib, o teste de geração de imagens é pulado. Instale
-`requirements.txt` para validar a suíte completa, incluindo os gráficos.
-
 ## **Estrutura do Projeto**
 
 ```text
 phase-07-FIAP-SIFSM/
+├── .gitignore
+├── agents.py
+├── analise_integrada.py
+├── banco_aurora_siger.sql
+├── banco_dados.py
 ├── codigo_fonte.py
 ├── config.py
-├── banco_dados.py
-├── banco_aurora_siger.sql
-├── monitoramento.py
-├── estruturas_dados.py
-├── simulacao_computacional.py
-├── modelo_linear.py
-├── agentes.py
-├── analise_integrada.py
+├── dados_aurora_siger.csv
 ├── demonstracao_energia.py
-├── requirements.txt
+├── estruturas_dados.py
+├── gerar_dados_iniciais.py
+├── main.py
+├── modelo_linear.py
+├── monitoramento.py
 ├── README.md
+├── requirements.txt
+├── simulacao_computacional.py
 ├── docs/
 │   ├── CONTRATOS.md
-│   ├── PLANO_EQUIPE.md
 │   ├── DOC_MONITORAMENTO_ESTRUTURAS.md
-│   └── DOC_SIMULACAO_REGRESSAO.md
+│   ├── DOC_SIMULACAO_REGRESSAO.md
+│   ├── PLANO_EQUIPE.md
+│   └── relatorio_tecnico.md
 ├── tests/
 │   ├── test_banco_dados.py
 │   ├── test_contratos.py
-│   ├── test_monitoramento.py
+│   ├── test_demonstracao_energia.py
 │   ├── test_estruturas_dados.py
-│   ├── test_simulacao_computacional.py
+│   ├── test_gerador_dados.py
+│   ├── test_interface.py
 │   ├── test_modelo_linear.py
-│   └── test_demonstracao_energia.py
+│   ├── test_monitoramento.py
+│   └── test_simulacao_computacional.py
 └── graficos_ou_imagens/
-    ├── potencias_por_ciclo.png
     ├── bateria_e_soc.png
+    ├── demonstracao_energia.json
+    ├── potencias_por_ciclo.png
     ├── regressao_consumo.png
-    ├── residuos_teste.png
-    └── demonstracao_energia.json
+    └── residuos_teste.png
 ```
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `codigo_fonte.py` | Menu Principal e interface do terminal |
+| `main.py` | Menu de entrada para a simulação/regressão e a demonstração de agentes |
+| `codigo_fonte.py` | Menu de gerenciamento de dados, CRUD e interface SQLite |
+| `agents.py` | Simulação de agentes e regras de guardrail |
+| `analise_integrada.py` | Demonstração antiga de consumo energético e regressão usada pelo `main.py` |
 | `config.py` | Configurações compartilhadas |
 | `banco_dados.py` | Persistência e operações SQLite |
 | `banco_aurora_siger.sql` | Esquema relacional do banco |
 | `gerar_dados_iniciais.py` | Geração dos dados simulados |
-| `dados_aurora_siger.csv` | Dados iniciais compartilhados |
+| `dados_aurora_siger.csv` | Dados iniciais simulados usados pela importação |
 | `monitoramento.py` | Regras booleanas e monitoramento |
 | `estruturas_dados.py` | Estruturas de dados operacionais |
 | `simulacao_computacional.py` | Simulação energética |
 | `modelo_linear.py` | Modelagem e regressão linear |
-| demonstracao_energia.py | Demonstração reproduzível, comparação de cenários e gráficos |
-| `agentes.py` | Agentes especializados simulados |
-| `analise_integrada.py` | Integração dos resultados |
-| `tests/` | Testes automatizados |
-| `docs/` | Contratos e documentação da equipe |
-| graficos_ou_imagens/ | Evidências da demonstração energética |
+| `demonstracao_energia.py` | Demonstração reproduzível, comparação de cenários, gráficos e JSON |
+| `requirements.txt` | Dependências externas para os módulos analíticos e gráficos |
+| `tests/` | Nove arquivos de testes automatizados |
+| `docs/` | Contratos, documentação técnica, plano da equipe e relatório |
+| `graficos_ou_imagens/` | Gráficos e resultados JSON da demonstração |
 
 ### **Banco de dados**
 
@@ -427,6 +338,7 @@ Documentação:
 - [Plano da equipe](docs/PLANO_EQUIPE.md).
 - [Monitoramento e estruturas](docs/DOC_MONITORAMENTO_ESTRUTURAS.md).
 - [Simulação e regressão](docs/DOC_SIMULACAO_REGRESSAO.md).
+- [Relatório técnico](docs/relatorio_tecnico.md).
 
 ## **Regras de Desenvolvimento**
 
@@ -484,17 +396,25 @@ marciana simulada.
 - O protótipo utiliza SQLite local.
 - Não depende de sensores físicos ou serviços externos.
 - Não implementa controle físico de equipamentos marcianos.
-- A integração final depende da validação dos módulos
-  desenvolvidos pelos demais integrantes.
+- Os dois pontos de entrada, `main.py` e `codigo_fonte.py`, ainda não estão
+  integrados entre si.
 
 Essas limitações deverão ser consideradas na interpretação
 dos resultados e no relatório técnico final.
-- A integração entre banco, menu, agentes e análises ainda precisa ser concluída.
-- Os campos internos dos resultados analíticos estão documentados e precisam de
-  alinhamento com o responsável pela integração; as assinaturas e chaves principais
-  dos contratos foram preservadas.
-- É necessário definir a agregação dos sensores e se a série representa um módulo
-  ou toda a colônia antes de conectar `obter_serie_energia()` aos módulos analíticos.
+
+### **Integração pendente**
+
+- As opções especializadas do menu de `codigo_fonte.py` ainda são pontos de
+  integração e não executam os módulos correspondentes.
+- A opção de banco de dados do `main.py` importa `codigo_fonte.py`, mas não abre
+  seu menu.
+- É necessário definir a agregação dos sensores e se a série representa um
+  módulo ou toda a colônia antes de conectar `obter_serie_energia()` às análises.
+- `tests/test_contratos.py` ainda espera o módulo `agentes`; o arquivo atual é
+  `agents.py`, o que causa erro na descoberta completa dos testes.
+
+### **Modelos e resultados**
+
 - A bateria é ideal: não representa perdas, degradação, reserva mínima ou limites de potência.
 - A regressão usa uma única separação cronológica; previsões futuras são extrapolações,
   e associação entre ciclo e consumo não implica causalidade.
