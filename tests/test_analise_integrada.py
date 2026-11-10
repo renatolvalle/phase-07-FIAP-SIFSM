@@ -384,8 +384,13 @@ class TestEntradasAnalise(unittest.TestCase):
         self.assertEqual(resultado["indicadores"]["quantidade_ciclos"], 32)
         self.assertEqual(len(resultado["alertas"]), 19)
 
-    def test_opcao_existente_do_menu_permanece_repetivel(self):
-        processo = self.executar_processo([str(DIRETORIO_BASE / "main.py")], "2\n\n2\n\n4\n")
+    def test_adaptadores_sinteticos_permanecem_repetiveis_sem_menu_ou_banco(self):
+        # Na Etapa 3 os menus passam a usar o SQLite. Estes auxiliares continuam
+        # independentes: não executar main.py aqui, pois agora ele abre a aplicação.
+        processo = self.executar_processo(["-c", (
+            "from analise_integrada import simular_consumo_energetico, modelo_linear_previsao; "
+            "[(simular_consumo_energetico(), modelo_linear_previsao()) for _ in range(2)]"
+        )])
         self.assertEqual(processo.stdout.count("avaliação fora do treino"), 2)
         self.assertEqual(processo.stdout.count("SoC final:"), 2)
 

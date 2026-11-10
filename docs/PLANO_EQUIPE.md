@@ -111,11 +111,13 @@ sequenciais por conjunto de mudanças, preservando as responsabilidades acima:
 1. `fix/agentes-contratos`: contratos, recomendações e guardrails; integrada à
    `main` pelo PR #7.
 2. `feat/analise-integrada`: orquestração do banco, regras, hash/fila, simulação,
-   regressão e recomendações. Implementada nesta branch para teste e revisão,
+   regressão e recomendações; integrada à `main` pelo PR #8,
    com análise somente de leitura e demonstração CSV em memória. Os detalhes de
    campos/políticas estão em `CONTRATOS.md` e `DOC_ANALISE_INTEGRADA.md`.
-3. `fix/integracao-menus`: conectar as opções e unificar a navegação, após integrar
-   a análise. Os adaptadores da opção 2 atual permanecem como demonstração sintética.
+3. `fix/integracao-menus`: navegação unificada implementada e validada com 348 testes,
+   incorporando a contribuição publicada de Renato Nascimento (`ad1233c` em
+   `dev-renaton`) e completando as opções restantes. `codigo_fonte.py` é a entrada
+   principal; `main.py` chama a mesma aplicação. Guia em `DOC_NAVEGACAO.md`.
 4. `docs/finalizacao-entrega`: revisão completa do relatório, README final,
    evidências aplicáveis, vídeo e validação do ZIP.
 
@@ -126,10 +128,17 @@ média do treino e contagem de previsões negativas no teste. Os agentes deixam
 de recomendar pico/tendência de uma reta que não supera a referência ou produz
 negativas, usando a média do treino como referência explícita quando disponível;
 avaliação incompleta implica abstenção. Os resultados brutos da regressão são
-preservados. Esse complemento está comunicado em `CONTRATOS.md` para revisão no PR.
+preservados. Esse complemento foi integrado pelo PR #8 e está em `CONTRATOS.md`.
 Persistir alertas continua sendo uma operação explícita da aplicação. O plano de branches finais
 complementa as branches individuais da implementação inicial; cada etapa segue
 teste, revisão e PR antes de integrar a `main` e iniciar a seguinte.
+
+A Etapa 3 mantém as assinaturas dos módulos e não altera o esquema nem os cálculos.
+Monitoramento oferece registro explícito/idempotente de R1; análises são de leitura;
+cadastro de solicitação é administrativo, fila/pilha/grafo não controlam equipamentos.
+O teste dos pontos de entrada usa cópias isoladas, sem tocar no banco local.
+O relatório completo, o arquivo de representação lógica, o vídeo/link e o ZIP
+continuam pendentes da Etapa 4; a conclusão da navegação não atesta entrega final.
 
 ## **Regras de Colaboração**
 - Não modificar arquivos de outro integrante sem combinar previamente.

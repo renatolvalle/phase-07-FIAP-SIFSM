@@ -3,7 +3,7 @@
 ## **FIAP - Ciência da Computação | Fase 07**
 
 - **Colônia:** Aurora Siger
-- **Estado:** Em desenvolvimento, com módulos implementados e integração pendente
+- **Estado:** Protótipo integrado pelo terminal; documentação final e pacote de entrega pendentes
 - **Versão-alvo:** v0.2.0, após revisão e integração na `main`
 - **Linguagem:** Python
 - **Banco de Dados:** SQLite
@@ -26,8 +26,8 @@ O Sistema Integrado de Futuro Sustentável em Marte (SIFSM) é um protótipo aca
 
 O protótipo reúne implementações de banco de dados, estruturas de dados, regras
 booleanas, simulação computacional, modelagem linear e agentes simulados. Esses
-módulos estão conectados pela análise integrada; a ligação aos menus ainda está
-em andamento.
+módulos estão conectados pela análise integrada e pelo menu único de `codigo_fonte.py`.
+`main.py` é uma entrada alternativa para a mesma aplicação.
 
 Não será necessário utilizar sensores físicos, APIs externas ou modelos avançados de inteligência artificial.
 
@@ -69,9 +69,9 @@ A suíte automatizada usa `unittest`; veja [Como Executar os Testes](#como-execu
 | Simulação e regressão | Implementações em `simulacao_computacional.py` e `modelo_linear.py`; demonstração reproduzível em `demonstracao_energia.py` |
 | Agentes | `agents.py` oferece roteamento com guardrail antes do handoff, recomendações baseadas nos resultados e demonstração explícita, sem execução operacional ou persistência |
 | Análise integrada | `executar_analise_integrada(conexao)` consulta o banco, aplica R1/R2, organiza hash/fila, simula energia, avalia a regressão e gera recomendações; somente leitura |
-| Menu `main.py` | Executa demonstração sintética de simulação/regressão; ainda não chama a análise do banco nem os pontos de entrada de CRUD/agentes |
-| Menu `codigo_fonte.py` | Inicializa o banco e abre o gerenciamento de dados; opções especializadas restantes ainda exibem “Funcionalidade em Desenvolvimento” |
-| Integração | Fluxo analítico disponível por função e demonstração CLI com CSV em memória; navegação unificada pendente |
+| Entrada `main.py` | Encaminha explicitamente para a mesma função principal de `codigo_fonte.py`, sem menu paralelo |
+| Menu `codigo_fonte.py` | Entrada principal padronizada: dados, monitoramento, estruturas, simulação, regressão, agentes, sustentabilidade e informações técnicas; opções repetíveis |
+| Integração | Fluxo completo disponível no terminal, por função e por demonstração CSV em memória; nenhuma atuação física automática |
 
 ## **Tecnologias**
 - Python: ambiente verificado com **3.12.10** no Windows.
@@ -108,31 +108,42 @@ ou mudanças na política de execução do PowerShell.
 
 Os exemplos abaixo são executados a partir da raiz do repositório.
 
-### **Executar o menu principal**
-
-```powershell
-.\.venv\Scripts\python.exe -X utf8 -B main.py
-```
-
-No menu de `main.py`, escolha `2` para executar uma demonstração sintética de
-simulação e previsão (24 ciclos, sem consultar o banco), ou `4` para sair.
-A opção `3` apenas importa os agentes e ainda
-precisa chamar a demonstração explícita, pois importar o módulo não a executa.
-A opção `1` importa `codigo_fonte.py`, mas não inicia o menu de banco de dados.
-
-### **Executar o menu de banco de dados e CRUD**
+### **Executar a aplicação — entrada principal `codigo_fonte.py`**
 
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 -B codigo_fonte.py
 ```
 
-Esse menu inicializa o banco SQLite e oferece gerenciamento de módulos,
-sensores, leituras e importação dos dados iniciais. As outras opções do menu
-principal estão disponíveis como pontos de integração, mas ainda não executam
-seus módulos especializados.
+Na primeira execução, escolha **1 → 9 → digite `IMPORTAR`** para carregar o CSV
+simulado fornecido. Pressione Enter para continuar e `0` para voltar ao principal.
+Não há importação automática nem substituição de dados ausentes por exemplos sintéticos.
+
+| Opção principal | Funcionalidade |
+|---|---|
+| 1 | Gerenciar dados: CRUD de módulos, consultas e importação CSV |
+| 2 | Monitorar leituras por ciclo/todos, R1/R2 e tabelas verdade; `REGISTRAR` salva R1 explicitamente |
+| 3 | Hash de sensores, cadastro de solicitações, fila FIFO, pilha LIFO e grafo hipotético |
+| 4 | Bateria ideal com dados do SQLite e comparação hipotética com geração −30% |
+| 5 | Exploração, regressão, métricas no teste, previsões brutas e recomendações com ressalvas |
+| 6 | Demonstração explícita de agentes e consulta textual opcional, sem cadastro ou operação |
+| 7 | Análise integrada de sustentabilidade com dados do SQLite, resultados e limitações |
+| 8 | Configuração, arquitetura computacional, políticas e limitações do protótipo |
+| 0 | Encerrar e fechar a conexão |
+
+### **Entrada alternativa**
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -B main.py
+```
+
+Ambos os comandos inicializam o mesmo esquema e abrem o mesmo menu. A navegação
+aceita repetição, trata opções inválidas e encerra também com EOF/Ctrl+C, fechando
+a conexão. Falha de inicialização informa o erro e retorna código de saída 1.
 
 O arquivo `aurora_siger.db` é criado automaticamente quando necessário e está
 ignorado pelo Git.
+Para ensaiar sem modificar um banco já existente, use uma cópia da pasta sem esse
+arquivo. O roteiro e as políticas de escrita estão em [Navegação](docs/DOC_NAVEGACAO.md).
 
 ### **Demonstração dos agentes e guardrails**
 
@@ -226,8 +237,8 @@ do treino pela média global. A comparação nessa janela não garante desempenh
 futuro e toda sugestão exige validação humana.
 
 Veja [Análise integrada](docs/DOC_ANALISE_INTEGRADA.md) para políticas de cobertura,
-unidades, persistência explícita, resultados e limitações. Os menus ainda serão
-conectados a essa função na etapa de navegação.
+unidades, persistência explícita, resultados e limitações. As opções 4, 5 e 7
+usam essa análise validada; não utilizam os 24 ciclos da demonstração independente.
 
 ### **Gerar os dados iniciais**
 
@@ -240,7 +251,7 @@ sensores e leituras. Executá-lo novamente sobrescreve esse CSV.
 
 ## **Menu de Gerenciamento de Dados**
 
-O menu de gerenciamento é aberto ao executar `codigo_fonte.py` diretamente.
+O menu de gerenciamento é aberto pela **opção 1** do menu principal.
 
 | Opção | Funcionalidade |
 |---|---|
@@ -264,8 +275,11 @@ restrições de integridade referencial do banco de dados.
 As consultas de sensores, leituras e dados energéticos utilizam
 as funções compartilhadas de `banco_dados.py`.
 
-O Menu Principal mantém as demais opções destinadas aos
-módulos especializados do SIFSM.
+No submenu de estruturas (principal → 3), as opções 1–5 oferecem busca hash,
+cadastro de solicitação, fila FIFO, pilha e grafo. A fila temporária não conclui
+solicitações no SQLite; a pilha não desfaz CRUD; as dependências do grafo são
+hipotéticas e só incluem módulos cadastrados. Alertas são calculados e podem ser
+registrados no monitoramento (principal → 2), sem duplicar registros idênticos.
 
 
 ## **Como Executar os Testes**
@@ -298,6 +312,9 @@ Em Linux/macOS, o comando equivalente é `python3 -m unittest discover -s tests`
 Os testes de persistência usam bancos SQLite em memória, e os testes de
 arquivos usam diretórios temporários. Os testes da demonstração gráfica
 precisam das dependências instaladas por `requirements.txt`.
+Os testes de CLI copiam os módulos, SQL e CSV para uma pasta temporária, pois o
+caminho do banco é relativo a `config.py`, não ao diretório de execução. Não
+acessam o banco local. Validação da Etapa 3: **348 testes aprovados**.
 
 Para executar apenas os testes de simulação, regressão ou demonstração:
 
@@ -306,6 +323,7 @@ Para executar apenas os testes de simulação, regressão ou demonstração:
 .\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p "test_modelo_linear.py" -v
 .\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p "test_demonstracao_energia.py" -v
 .\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p "test_analise_integrada.py" -v
+.\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p "test_navegacao.py" -v
 ```
 
 ## **Estrutura do Projeto**
@@ -333,6 +351,7 @@ phase-07-FIAP-SIFSM/
 │   ├── CONTRATOS.md
 │   ├── DOC_ANALISE_INTEGRADA.md
 │   ├── DOC_MONITORAMENTO_ESTRUTURAS.md
+│   ├── DOC_NAVEGACAO.md
 │   ├── DOC_SIMULACAO_REGRESSAO.md
 │   ├── PLANO_EQUIPE.md
 │   └── relatorio_tecnico.md
@@ -345,8 +364,13 @@ phase-07-FIAP-SIFSM/
 │   ├── test_estruturas_dados.py
 │   ├── test_gerador_dados.py
 │   ├── test_interface.py
+│   ├── test_interface_estruturas.py
+│   ├── test_interface_monitoramento.py
+│   ├── test_interface_pilha_grafo.py
+│   ├── test_interface_simulacao.py
 │   ├── test_modelo_linear.py
 │   ├── test_monitoramento.py
+│   ├── test_navegacao.py
 │   └── test_simulacao_computacional.py
 └── graficos_ou_imagens/
     ├── bateria_e_soc.png
@@ -358,10 +382,10 @@ phase-07-FIAP-SIFSM/
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `main.py` | Menu de entrada para a simulação/regressão, com integração de banco e agentes pendente |
-| `codigo_fonte.py` | Menu de gerenciamento de dados, CRUD e interface SQLite |
+| `main.py` | Entrada alternativa, sem fluxo ou menu próprio |
+| `codigo_fonte.py` | Arquivo principal: navegação integrada, apresentações, CRUD e ciclo de vida da conexão |
 | `agents.py` | Simulação de agentes e regras de guardrail |
-| `analise_integrada.py` | Orquestração somente de leitura com conexão recebida; demonstração CSV em memória e adaptadores sintéticos para o menu atual |
+| `analise_integrada.py` | Orquestração somente de leitura com conexão recebida; demonstração CSV em memória e auxiliares sintéticos independentes dos menus |
 | `config.py` | Configurações compartilhadas |
 | `banco_dados.py` | Persistência e operações SQLite |
 | `banco_aurora_siger.sql` | Esquema relacional do banco |
@@ -373,7 +397,7 @@ phase-07-FIAP-SIFSM/
 | `modelo_linear.py` | Modelagem e regressão linear |
 | `demonstracao_energia.py` | Demonstração reproduzível, comparação de cenários, gráficos e JSON |
 | `requirements.txt` | Dependências externas para os módulos analíticos e gráficos |
-| `tests/` | Onze arquivos de testes automatizados |
+| `tests/` | Dezesseis arquivos de testes automatizados |
 | `docs/` | Contratos, documentação técnica, plano da equipe e relatório |
 | `graficos_ou_imagens/` | Gráficos e resultados JSON da demonstração |
 
@@ -410,6 +434,7 @@ Documentação:
 - [Monitoramento e estruturas](docs/DOC_MONITORAMENTO_ESTRUTURAS.md).
 - [Simulação e regressão](docs/DOC_SIMULACAO_REGRESSAO.md).
 - [Análise integrada](docs/DOC_ANALISE_INTEGRADA.md).
+- [Navegação e demonstração pelo terminal](docs/DOC_NAVEGACAO.md).
 - [Relatório técnico](docs/relatorio_tecnico.md).
 
 ## **Regras de Desenvolvimento**
@@ -468,25 +493,25 @@ marciana simulada.
 - O protótipo utiliza SQLite local.
 - Não depende de sensores físicos ou serviços externos.
 - Não implementa controle físico de equipamentos marcianos.
-- Os dois pontos de entrada, `main.py` e `codigo_fonte.py`, ainda não estão
-  integrados entre si.
+- Os dois pontos de entrada compartilham a mesma aplicação, sem autenticação
+  ou controle de acesso multiusuário; o arquivo SQLite deve ser protegido localmente.
 
 Essas limitações deverão ser consideradas na interpretação
 dos resultados e no relatório técnico final.
 
-### **Integração pendente**
+### **Escopo integrado e finalização pendente**
 
-- As opções especializadas do menu de `codigo_fonte.py` ainda são pontos de
-  integração e não executam os módulos correspondentes.
-- A opção de banco de dados do `main.py` importa `codigo_fonte.py`, mas não abre
-  seu menu.
+- As oito opções do menu estão conectadas, sem placeholders. Consultar agentes
+  executa a demonstração explicitamente em cada visita, sem depender do cache de importação.
 - A análise já usa `obter_serie_energia()`: soma por ciclo dos sensores energéticos
   com leituras, de todos os módulos. Cobertura parcial e status atuais têm as
   limitações descritas no contrato; não se presume medição de toda a colônia real.
-- A opção 2 de `main.py` mantém a demonstração sintética; falta conectá-la ao
-  fluxo de dados da aplicação, junto das demais opções especializadas.
-- O menu de agentes ainda precisa chamar `agents.demonstrar_agentes()`;
-  os testes já verificam as assinaturas, os retornos e os guardrails de `agents.py`.
+- R1/R2 podem ser consultadas sem série energética completa. Simulação, regressão
+  e análise integrada rejeitam cobertura parcial, medidas/unidades inválidas.
+- O relatório técnico ainda é um rascunho com divergências conhecidas (esquema,
+  RAG/automação e descrição dos modelos); sua revisão completa pertence à Etapa 4.
+- Representação lógica em arquivo, vídeo/link e ZIP reproduzível ainda precisam
+  ser preparados/conferidos. A navegação concluída não equivale à entrega final concluída.
 
 ### **Modelos e resultados**
 

@@ -424,6 +424,8 @@ implementações numéricas e inicialmente confirmaram os respectivos stubs.
 Na revisão da Etapa 2, a suíte completa passou a **272 testes aprovados**, incluindo
 a escolha da referência, abstenção, métricas preservadas, negativas no teste/futuro
 e comprovação de que a média do treino não utiliza as observações de teste.
+Na Etapa 3, **348 testes aprovados** também conferem os resultados exibidos pelo
+terminal e a cobertura validada antes de simulação/regressão/análise do SQLite.
 
 Cobertura funcional:
 
@@ -447,16 +449,16 @@ inspecionados visualmente.
 
 ## 7. Integração e pendências da equipe
 
-1. **Alexandre:** alinhar os campos internos deste documento antes de consumir
-   os resultados em agentes e análise integrada.
-2. **Renato Nascimento:** fornecer a série agregada em `obter_serie_energia()`;
-   definir com a equipe se representa um módulo ou toda a colônia e como agrega
-   sensores de consumo e geração, mantendo as unidades e a duração.
-3. **Equipe:** conectar menu/banco/análise e consolidar este material no relatório
-   técnico e vídeo. O README já contém dependências, comandos, estrutura e estado
-   desta revisão; mantê-lo atualizado conforme a integração avançar.
-4. A demonstração local é executável, mas não atesta o fluxo completo do sistema;
-   a integração depende das implementações dos demais módulos.
+1. **Integração implementada:** `obter_serie_energia()` soma os sensores com leituras
+   de todos os módulos por ciclo. A análise valida cobertura/unidades antes de
+   consumir a série, preserva o histórico e usa os modelos/recomendações acordados.
+2. **Navegação implementada na Etapa 3:** opções 4, 5 e 7 de `codigo_fonte.py`
+   apresentam simulação, regressão e sustentabilidade a partir do banco. A opção 4
+   também compara geração agregada −30%; não altera os dados nem o ajuste da reta.
+   `main.py` abre a mesma aplicação. Veja [Navegação](DOC_NAVEGACAO.md).
+3. **Equipe — Etapa 4:** consolidar este material no relatório técnico e vídeo,
+   preparar evidências/arquivos e validar a reprodução a partir do ZIP final.
+   O README descreve o estado atual; a integração funcional não conclui a entrega.
 
 Possíveis extensões após alinhamento: perdas, limites de potência, reserva mínima,
 degradação, dados adicionais e avaliação temporal em mais janelas. Qualquer
