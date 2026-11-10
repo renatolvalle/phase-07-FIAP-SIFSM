@@ -320,7 +320,7 @@ Cada ciclo simulado terá duração padrão de uma hora.
 - **Exclusão de registro inexistente:** retornar `False`.
 - **Dados inválidos:** sinalizar exceção apropriada.
 - **Violação de integridade:** preservar o erro ou convertê-lo em exceção documentada.
-- **Função não implementada:** utilizar `NotImplementedError`.
+- **Implementação atual:** não há stubs ou `NotImplementedError` nos módulos entregues.
 
 ## **Regras de Integração**
 
@@ -332,3 +332,15 @@ Cada ciclo simulado terá duração padrão de uma hora.
 6. Adicionar testes às funcionalidades implementadas.
 
 **Versão dos Contratos: 1.0**
+
+## Artefatos e reprodução — Etapa 4
+
+Assinaturas e resultados operacionais não foram modificados pela finalização
+documental. `scripts/gerar_documentos.py` importa o CSV em SQLite em memória,
+reutiliza os modelos e funções de tabela verdade e produz somente os artefatos
+nomeados. O JSON inclui SHA-256 das fontes analíticas/dados para detectar mudanças.
+`scripts/empacotar.py` usa lista explícita; `scripts/validar_entrega.py` verifica
+manifesto, sintaxe, links e atualidade das evidências antes do ensaio opcional.
+Dependências editoriais ficam em `requirements-docs.txt`, separadas do runtime.
+O contrato de entrega e as duas pendências humanas (vídeo/publicação e link)
+estão em [ENTREGA.md](ENTREGA.md). Nenhuma dessas ferramentas controla equipamentos.

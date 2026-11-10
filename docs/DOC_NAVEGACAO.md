@@ -124,6 +124,7 @@ usam SQLite em memória/diretórios temporários, sem acessar o banco local. Cob
 erros SQLite/numéricos, cobertura incompleta, ausência de dados, negativas/R²
 indefinido, guardrails, retorno de submenus e fechamento em saída/erro/EOF/Ctrl+C.
 
-Esta etapa conclui a **navegação**, não a entrega acadêmica: a revisão completa
-do relatório, representação lógica em arquivo, revisão de atribuições, vídeo/link,
-ZIP e ensaio da entrega final continuam na **Etapa 4**.
+Esta etapa concluiu a **navegação**, não a entrega acadêmica. Na Etapa 4, relatório,
+representação lógica, revisão editorial, ZIP técnico e ensaio foram consolidados;
+consulte [Entrega](ENTREGA.md) e [Validação](VALIDACAO_ENTREGA.md). Apenas gravação
+humana e publicação/link do vídeo continuam pendentes.

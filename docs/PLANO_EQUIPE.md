@@ -1,7 +1,7 @@
 # **SIFSM - Plano de Desenvolvimento da Equipe**
 
 - **Projeto:** Sistema Integrado de Futuro Sustentável em Marte
-- **Versão:** Scaffold v1.0
+- **Versão:** Plano consolidado após as quatro etapas técnicas, 10/11/2026
 - **Equipe:** 
 | Nome | GitHub | Matrícula 
 |------|--------| --------|
@@ -114,12 +114,13 @@ sequenciais por conjunto de mudanças, preservando as responsabilidades acima:
    regressão e recomendações; integrada à `main` pelo PR #8,
    com análise somente de leitura e demonstração CSV em memória. Os detalhes de
    campos/políticas estão em `CONTRATOS.md` e `DOC_ANALISE_INTEGRADA.md`.
-3. `fix/integracao-menus`: navegação unificada implementada e validada com 348 testes,
+3. `fix/integracao-menus`: integrada pelo PR #9; navegação unificada validada com 348 testes,
    incorporando a contribuição publicada de Renato Nascimento (`ad1233c` em
    `dev-renaton`) e completando as opções restantes. `codigo_fonte.py` é a entrada
    principal; `main.py` chama a mesma aplicação. Guia em `DOC_NAVEGACAO.md`.
-4. `docs/finalizacao-entrega`: revisão completa do relatório, README final,
-   evidências aplicáveis, vídeo e validação do ZIP.
+4. `docs/finalizacao-entrega`: relatório reescrito e PDF acadêmico, representação
+   lógica, evidências do CSV, revisão editorial, README e pacote técnico reproduzível.
+   Só gravação humana e publicação/link do vídeo ficam pendentes.
 
 A Etapa 2 conecta os módulos existentes sem mudar suas assinaturas compartilhadas,
 o esquema do banco ou os algoritmos de ajuste e simulação. Na revisão autorizada
@@ -137,8 +138,10 @@ A Etapa 3 mantém as assinaturas dos módulos e não altera o esquema nem os cá
 Monitoramento oferece registro explícito/idempotente de R1; análises são de leitura;
 cadastro de solicitação é administrativo, fila/pilha/grafo não controlam equipamentos.
 O teste dos pontos de entrada usa cópias isoladas, sem tocar no banco local.
-O relatório completo, o arquivo de representação lógica, o vídeo/link e o ZIP
-continuam pendentes da Etapa 4; a conclusão da navegação não atesta entrega final.
+O relatório completo, a representação lógica e o ZIP técnico são consolidados na
+Etapa 4. [ENTREGA.md](ENTREGA.md) descreve reconstrução e fechamento;
+[VALIDACAO_ENTREGA.md](VALIDACAO_ENTREGA.md) registra testes, revisão e ensaio isolado.
+O vídeo/link permanece com humanos, sem confundir pacote técnico com submissão completa.
 
 ## **Regras de Colaboração**
 - Não modificar arquivos de outro integrante sem combinar previamente.

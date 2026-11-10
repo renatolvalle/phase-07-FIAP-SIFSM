@@ -2,7 +2,7 @@
 
 - **Responsável:** Renato Valle
 - **Arquivos implementados:** `monitoramento.py`, `estruturas_dados.py`; interface em `codigo_fonte.py`
-- **Artefato pendente:** representação lógica em arquivo para conferência na Etapa 4
+- **Artefato:** [circuito_logico.pdf](../circuito_logico.pdf), AND/OR e tabelas verdade, representação digital sem hardware
 - **Testes:** `tests/test_monitoramento.py`, `tests/test_estruturas_dados.py`
 - **Itens do enunciado atendidos:** 1.2 (circuitos lógicos, sensores simulados e automação) e 1.3 (estruturas de dados)
 
@@ -50,14 +50,18 @@ Somente sensores e módulos com status `ativo` são avaliados, e somente sensore
 | 1 | 0 | 1 |
 | 1 | 1 | 1 |
 
-A função `gerar_tabela_verdade_bloqueio()` devolve essa tabela como `list[dict]`. A R2 não grava alerta, porque um módulo em manutenção não tem sensor associado e a tabela `alertas` exige `sensor_id`.
+A função `gerar_tabela_verdade_bloqueio()` devolve essa tabela como `list[dict]`.
+A R2 retorna um diagnóstico com motivos, não cadastra alertas. Um módulo em
+manutenção pode ter sensores; isso não altera a expressão OR. `permitido=True`
+significa apenas ausência dessas duas condições, não autorização geral de segurança.
 
 ### **1.3 Representação lógica**
 
 As expressões e tabelas verdade acima representam as portas AND (R1) e OR (R2)
 e são exibidas pela opção 2 da aplicação quando há leituras. Os testes conferem
-a coerência com as funções. Nenhum `circuito_logico.pdf` foi encontrado na
-verificação desta etapa; não considerar o artefato entregue antes da Etapa 4.
+a coerência com as funções. O [PDF](../circuito_logico.pdf) foi preparado na Etapa 4,
+com filtro de elegibilidade da R1 explicitado e sem simular acionamento físico.
+As tabelas são geradas pelas mesmas funções deste módulo.
 
 ### **1.4 Decisões técnicas**
 
