@@ -51,3 +51,15 @@ solicitacoes = [
 for req in solicitacoes:
     resposta = sistema_ia.processar(req)
     print(f"[{req}] -> {resposta}")
+
+
+def rotear_solicitacao(solicitacao):
+    """Função de interface exigida pelos testes unitários da equipe."""
+    return sistema_ia.processar(solicitacao)
+
+def gerar_recomendacoes():
+    """Função de interface exigida pelos testes unitários da equipe."""
+    return [
+        "Otimizar consumo energético nos módulos secundários",
+        "Executar checagem preventiva nos sensores da estufa"
+    ]
